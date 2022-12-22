@@ -1,10 +1,15 @@
-
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from officetabla import OfficeTabla
 
 
 class OfficeMenu(object):
+
+    def openTabla(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = OfficeTabla()
+        self.ui.setupUi(self.window)
+        self.window.show()
+
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -37,7 +42,7 @@ class OfficeMenu(object):
         self.pushButtonSubirArchivos.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonSubirArchivos.setObjectName("pushButtonSubirArchivos")
         self.verticalLayout.addWidget(self.pushButtonSubirArchivos)
-        self.pushButtonTablas = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.pushButtonTablas = QtWidgets.QPushButton(self.verticalLayoutWidget, clicked = lambda: self.openTabla())
         self.pushButtonTablas.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonTablas.setObjectName("pushButtonTablas")
         self.verticalLayout.addWidget(self.pushButtonTablas)

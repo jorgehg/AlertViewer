@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1366</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Office - Tabla</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1366</width>
+      <height>768</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(237, 237, 237);</string>
+    </property>
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>170</y>
+       <width>1321</width>
+       <height>541</height>
+      </rect>
+     </property>
+     <column>
+      <property name="text">
+       <string>ID Registro</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Fecha y Hora</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>ID Usuario</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Endpoint</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>BU</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Politica</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Regla</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Canal DLP</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Count</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Severidad</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Accion DLP</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Escalamiento</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>CC</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Argos Capa</string>
+      </property>
+     </column>
+    </widget>
+    <widget class="QWidget" name="horizontalLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>1059</x>
+       <y>10</y>
+       <width>271</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="pushButtonActualizar">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 135, 135);</string>
+        </property>
+        <property name="text">
+         <string>Actualizar</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButtonAtras">
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 135, 135);</string>
+        </property>
+        <property name="text">
+         <string>Atrás</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

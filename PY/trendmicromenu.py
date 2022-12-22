@@ -1,5 +1,6 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-import sqlite3, os, re, win32com.client, database
+from PyQt5 import QtCore, QtGui, QtQuickWidgets, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
+import os, re, win32com.client, database
 from trendmicrotabla import TrendmicroTabla
 
 
@@ -12,7 +13,9 @@ class TrendmicroMenu(object):
         self.window.show()
     
     def loadFiles(self):
-        folder_path_emails = os.path.normpath(r"C:\Users\Jorge\Documents\EmailParser\Mails")
+        warning = QMessageBox()
+        warning.setWindowTitle("Aviso")
+        folder_path_emails = os.path.normpath(r"C:\Users\ext_johirayg\Documents\AlertViewer\Mails")
         email_list = [file for file in os.listdir(folder_path_emails) if file.endswith(".msg")]
         outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
         db = database.connect()
@@ -49,6 +52,9 @@ class TrendmicroMenu(object):
             db.execute("INSERT INTO alertassoc (Fecha_y_Hora,user_ID,Endpoint,BU,Politica,Regla,Canal_DLP,count,severidad,Accion_DLP,escalamiento,CC,argos_capa) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",(str(msg.sentOn),input_list[0],input_list[1],input_list[2],input_list[3],input_list[4],input_list[5],input_list[6],input_list[7],input_list[8],input_list[9],input_list[10], input_list[11]))
             db.commit()
             print(input_list)
+
+        warning.setText("Se han cargado con éxito "+str(len(email_list))+" registros.")
+        x = warning.exec_()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -120,8 +126,6 @@ class TrendmicroMenu(object):
         self.label_2.setText(_translate("MainWindow", "Trendmicro"))
         
 if __name__ == "__main__":
-    
-
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
