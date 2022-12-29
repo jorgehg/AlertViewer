@@ -22,9 +22,6 @@ class OfficeMenu(object):
         font.setPointSize(26)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.pushButtonBack = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButtonBack.setGeometry(QtCore.QRect(700, 20, 71, 51))
-        self.pushButtonBack.setObjectName("pushButtonBack")
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setGeometry(QtCore.QRect(0, 0, 800, 600))
         self.widget.setStyleSheet("background-color: rgb(216, 217, 207);\n"
@@ -72,7 +69,6 @@ class OfficeMenu(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Office - Inicio"))
         self.label.setText(_translate("MainWindow", "Office"))
-        self.pushButtonBack.setText(_translate("MainWindow", "Atrás"))
         self.pushButtonSubirArchivos.setText(_translate("MainWindow", "Subir Archivos"))
         self.pushButtonTablas.setText(_translate("MainWindow", "Tablas"))
         self.pushButtonAlertas.setText(_translate("MainWindow", "Alertas"))
