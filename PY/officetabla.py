@@ -54,7 +54,7 @@ class OfficeTabla(object):
         self.pushButtonActualizar.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonActualizar.setObjectName("pushButtonActualizar")
         self.horizontalLayout_2.addWidget(self.pushButtonActualizar)
-        self.pushButtonAtras = QtWidgets.QPushButton(self.horizontalLayoutWidget_2, clicked = lambda: MainWindow.hide())
+        self.pushButtonAtras = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.pushButtonAtras.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonAtras.setObjectName("pushButtonAtras")
         self.horizontalLayout_2.addWidget(self.pushButtonAtras)

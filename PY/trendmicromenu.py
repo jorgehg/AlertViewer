@@ -5,12 +5,6 @@ from trendmicrotabla import TrendmicroTabla
 
 
 class TrendmicroMenu(object):
-
-    def openTabla(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui = TrendmicroTabla()
-        self.ui.setupUi(self.window)
-        self.window.show()
     
     def loadFiles(self):
         warning = QMessageBox()
@@ -19,23 +13,7 @@ class TrendmicroMenu(object):
         email_list = [file for file in os.listdir(folder_path_emails) if file.endswith(".msg")]
         outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
         db = database.connect()
-        db.execute("""CREATE TABLE IF NOT EXISTS "alertassoc" (
-            "Fecha_y_Hora" TEXT,
-            "user_ID"	TEXT,
-            "Endpoint"	TEXT,
-            "BU"	TEXT,
-            "Politica"	TEXT,
-            "Regla" TEXT,
-            "Canal_DLP"	TEXT,
-            "count"	INTEGER,
-            "severidad"	TEXT,
-            "Accion_DLP"	TEXT,
-            "escalamiento"	TEXT,
-            "CC"	TEXT,
-            "argos_capa"	TEXT,
-            "registro_id"	INTEGER,
-            PRIMARY KEY("registro_id" AUTOINCREMENT)
-        )""")
+        database.createTableTrendmicro()
 
         for i, _ in enumerate(email_list):
             print(i)
@@ -68,9 +46,6 @@ class TrendmicroMenu(object):
         font.setPointSize(26)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.pushButtonBack = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButtonBack.setGeometry(QtCore.QRect(700, 20, 71, 51))
-        self.pushButtonBack.setObjectName("pushButtonBack")
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setGeometry(QtCore.QRect(0, 0, 800, 600))
         self.widget.setStyleSheet("background-color: rgb(216, 217, 207);\n"
@@ -84,11 +59,11 @@ class TrendmicroMenu(object):
         self.verticalLayout.setContentsMargins(250, 150, 250, 200)
         self.verticalLayout.setSpacing(1)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.pushButtonSubirArchivos = QtWidgets.QPushButton(self.verticalLayoutWidget, clicked = lambda: self.loadFiles())
+        self.pushButtonSubirArchivos = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.pushButtonSubirArchivos.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonSubirArchivos.setObjectName("pushButtonSubirArchivos")
         self.verticalLayout.addWidget(self.pushButtonSubirArchivos)
-        self.pushButtonTablas = QtWidgets.QPushButton(self.verticalLayoutWidget, clicked = lambda: self.openTabla())
+        self.pushButtonTablas = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.pushButtonTablas.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonTablas.setObjectName("pushButtonTablas")
         self.verticalLayout.addWidget(self.pushButtonTablas)
@@ -96,7 +71,7 @@ class TrendmicroMenu(object):
         self.pushButtonAlertas.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonAlertas.setObjectName("pushButtonAlertas")
         self.verticalLayout.addWidget(self.pushButtonAlertas)
-        self.pushButtonAtras = QtWidgets.QPushButton(self.verticalLayoutWidget, clicked = lambda: MainWindow.hide())
+        self.pushButtonAtras = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.pushButtonAtras.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonAtras.setObjectName("pushButtonAtras")
         self.verticalLayout.addWidget(self.pushButtonAtras)
@@ -118,7 +93,6 @@ class TrendmicroMenu(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Trendmicro - Inicio"))
         self.label.setText(_translate("MainWindow", "Office"))
-        self.pushButtonBack.setText(_translate("MainWindow", "Atrás"))
         self.pushButtonSubirArchivos.setText(_translate("MainWindow", "Subir Archivos"))
         self.pushButtonTablas.setText(_translate("MainWindow", "Tablas"))
         self.pushButtonAlertas.setText(_translate("MainWindow", "Alertas"))

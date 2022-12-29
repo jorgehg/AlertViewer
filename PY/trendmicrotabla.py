@@ -3,12 +3,7 @@ import database
 from fieldselector import FieldSelector
 
 class TrendmicroTabla(object):
-    def openFieldselector(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui = FieldSelector()
-        self.ui.setupUi(self.window)
-        self.window.show()
-
+    
     def loadData(self):
         db = database.connect()
         cur = db.cursor()
@@ -19,20 +14,20 @@ class TrendmicroTabla(object):
 
         for row in cur.execute(sqlquery):
             print(cur)
-            self.tableWidget.setItem(tableRow, 0, QtWidgets.QTableWidgetItem(str(row[13])))
-            self.tableWidget.setItem(tableRow, 1, QtWidgets.QTableWidgetItem(row[0]))
-            self.tableWidget.setItem(tableRow, 2, QtWidgets.QTableWidgetItem(row[1]))
-            self.tableWidget.setItem(tableRow, 3, QtWidgets.QTableWidgetItem(row[2]))
-            self.tableWidget.setItem(tableRow, 4, QtWidgets.QTableWidgetItem(row[3]))
-            self.tableWidget.setItem(tableRow, 5, QtWidgets.QTableWidgetItem(row[4]))
-            self.tableWidget.setItem(tableRow, 6, QtWidgets.QTableWidgetItem(row[5]))
-            self.tableWidget.setItem(tableRow, 7, QtWidgets.QTableWidgetItem(row[6]))
-            self.tableWidget.setItem(tableRow, 8, QtWidgets.QTableWidgetItem(str(row[7])))
-            self.tableWidget.setItem(tableRow, 9, QtWidgets.QTableWidgetItem(row[8]))
-            self.tableWidget.setItem(tableRow, 10, QtWidgets.QTableWidgetItem(row[9]))
-            self.tableWidget.setItem(tableRow, 11, QtWidgets.QTableWidgetItem(row[10]))
-            self.tableWidget.setItem(tableRow, 12, QtWidgets.QTableWidgetItem(row[11]))
-            self.tableWidget.setItem(tableRow, 13, QtWidgets.QTableWidgetItem(row[12]))
+            self.tableWidget.setItem(tableRow, 0, QtWidgets.QTableWidgetItem(str(row[0])))
+            self.tableWidget.setItem(tableRow, 1, QtWidgets.QTableWidgetItem(row[1]))
+            self.tableWidget.setItem(tableRow, 2, QtWidgets.QTableWidgetItem(row[2]))
+            self.tableWidget.setItem(tableRow, 3, QtWidgets.QTableWidgetItem(row[3]))
+            self.tableWidget.setItem(tableRow, 4, QtWidgets.QTableWidgetItem(row[4]))
+            self.tableWidget.setItem(tableRow, 5, QtWidgets.QTableWidgetItem(row[5]))
+            self.tableWidget.setItem(tableRow, 6, QtWidgets.QTableWidgetItem(row[6]))
+            self.tableWidget.setItem(tableRow, 7, QtWidgets.QTableWidgetItem(row[7]))
+            self.tableWidget.setItem(tableRow, 8, QtWidgets.QTableWidgetItem(str(row[8])))
+            self.tableWidget.setItem(tableRow, 9, QtWidgets.QTableWidgetItem(row[9]))
+            self.tableWidget.setItem(tableRow, 10, QtWidgets.QTableWidgetItem(row[10]))
+            self.tableWidget.setItem(tableRow, 11, QtWidgets.QTableWidgetItem(row[11]))
+            self.tableWidget.setItem(tableRow, 12, QtWidgets.QTableWidgetItem(row[12]))
+            self.tableWidget.setItem(tableRow, 13, QtWidgets.QTableWidgetItem(row[13]))
             tableRow+=1
 
 
@@ -84,11 +79,11 @@ class TrendmicroTabla(object):
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_2)
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.pushButtonActualizar = QtWidgets.QPushButton(self.horizontalLayoutWidget_2, clicked = lambda: self.loadData())
+        self.pushButtonActualizar = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.pushButtonActualizar.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonActualizar.setObjectName("pushButtonActualizar")
         self.horizontalLayout_2.addWidget(self.pushButtonActualizar)
-        self.pushButtonAtras = QtWidgets.QPushButton(self.horizontalLayoutWidget_2, clicked = lambda: MainWindow.hide())
+        self.pushButtonAtras = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
         self.pushButtonAtras.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonAtras.setObjectName("pushButtonAtras")
         self.horizontalLayout_2.addWidget(self.pushButtonAtras)
@@ -98,7 +93,7 @@ class TrendmicroTabla(object):
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_3)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.pushButton_Fieldselector = QtWidgets.QPushButton(self.horizontalLayoutWidget_3, clicked = lambda: self.openFieldselector())
+        self.pushButton_Fieldselector = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
         self.pushButton_Fieldselector.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButton_Fieldselector.setObjectName("pushButton_Fieldselector")
         self.horizontalLayout_3.addWidget(self.pushButton_Fieldselector)
@@ -125,6 +120,21 @@ class TrendmicroTabla(object):
         self.horizontalLayout_3.addWidget(self.pushButtonLimpiar)
         MainWindow.setCentralWidget(self.centralwidget)
 
+        self.comboBoxBuscarCampo.addItem('ID Registro')
+        self.comboBoxBuscarCampo.addItem('Fecha y Hora')
+        self.comboBoxBuscarCampo.addItem('ID Usuario')
+        self.comboBoxBuscarCampo.addItem('Endpoint')
+        self.comboBoxBuscarCampo.addItem('BU')
+        self.comboBoxBuscarCampo.addItem('Politica')
+        self.comboBoxBuscarCampo.addItem('Regla')
+        self.comboBoxBuscarCampo.addItem('Canal DLP')
+        self.comboBoxBuscarCampo.addItem('Count')
+        self.comboBoxBuscarCampo.addItem('Severidad')
+        self.comboBoxBuscarCampo.addItem('Accion DLP')
+        self.comboBoxBuscarCampo.addItem('Escalamiento')
+        self.comboBoxBuscarCampo.addItem('CC')
+        self.comboBoxBuscarCampo.addItem('Argos Capa')
+        
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

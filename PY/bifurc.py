@@ -4,19 +4,6 @@ from officemenu import OfficeMenu
 
 class Bifurc(object):
 
-    
-    def openTrendmicro(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui = TrendmicroMenu()
-        self.ui.setupUi(self.window)
-        self.window.show()
-
-    def openOffice(self):
-        self.window = QtWidgets.QMainWindow()
-        self.ui = OfficeMenu()
-        self.ui.setupUi(self.window)
-        self.window.show()
-    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -37,12 +24,12 @@ class Bifurc(object):
         self.horizontalLayout.setContentsMargins(150, 0, 150, 0)
         self.horizontalLayout.setSpacing(20)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.pushButtonTrendmicro = QtWidgets.QPushButton(self.horizontalLayoutWidget, clicked = lambda: self.openTrendmicro())
+        self.pushButtonTrendmicro = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.pushButtonTrendmicro.setStyleSheet("\n"
 "background-color: rgb(255, 135, 135);")
         self.pushButtonTrendmicro.setObjectName("pushButtonTrendmicro")
         self.horizontalLayout.addWidget(self.pushButtonTrendmicro)
-        self.pushButtonOffice = QtWidgets.QPushButton(self.horizontalLayoutWidget, clicked = lambda: self.openOffice())
+        self.pushButtonOffice = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.pushButtonOffice.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.pushButtonOffice.setAutoFillBackground(False)
         self.pushButtonOffice.setStyleSheet("background-color: rgb(255, 135, 135);")
