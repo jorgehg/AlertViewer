@@ -1,8 +1,4 @@
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-import array as arr
-
-
 
 class FieldSelector(object):
     
@@ -22,6 +18,7 @@ class FieldSelector(object):
     12 = CC 
     13 = argos_capa
     """
+
     fieldListNames = ["registro_id", "Fecha_y_Hora", "user_ID", "Endpoint", "BU", "Politica", "Regla", "Canal_DLP", "count", "severidad", "Accion_DLP", "escalamiento", "CC", "argos_capa"]
     fieldListStatus = [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
@@ -40,6 +37,9 @@ class FieldSelector(object):
         self.fieldListStatus[11] = 1 if self.checkBox_CC.isChecked() else 0
         self.fieldListStatus[12] = 1 if self.checkBox_ArgosCapa.isChecked() else 0
         self.fieldListStatus[13] = 1 if self.checkBox_IDRegistro.isChecked() else 0
+
+        print(self.fieldListStatus)
+        print("vetealaverga")
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -101,20 +101,20 @@ class FieldSelector(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
 
-        self.checkBox_IDRegistro.setChecked(True) if self.fieldListStatus[0] == 1 else self.checkBox_IDRegistro.setChecked(False)
-        self.checkBox_FechayHora.setChecked(True) if self.fieldListStatus[1] == 1 else self.checkBox_FechayHora.setChecked(False)
-        self.checkBox_ID_Usuario.setChecked(True) if self.fieldListStatus[2] == 1 else self.checkBox_ID_Usuario.setChecked(False)
-        self.checkBox_Endpoint.setChecked(True) if self.fieldListStatus[3] == 1 else self.checkBox_Endpoint.setChecked(False)
-        self.checkBox_BU.setChecked(True) if self.fieldListStatus[4] == 1 else self.checkBox_BU.setChecked(False)
-        self.checkBox_Politica.setChecked(True) if self.fieldListStatus[5] == 1 else self.checkBox_Politica.setChecked(False)
-        self.checkBox_Regla.setChecked(True) if self.fieldListStatus[6] == 1 else self.checkBox_Regla.setChecked(False)
-        self.checkBox_CanalDLP.setChecked(True) if self.fieldListStatus[7] == 1 else self.checkBox_CanalDLP.setChecked(False)
-        self.checkBox_Count.setChecked(True) if self.fieldListStatus[8] == 1 else self.checkBox_Count.setChecked(False)
-        self.checkBox_Severidad.setChecked(True) if self.fieldListStatus[9] == 1 else self.checkBox_Severidad.setChecked(False)
-        self.checkBox_AccionDLP.setChecked(True) if self.fieldListStatus[10] == 1 else self.checkBox_AccionDLP.setChecked(False)
-        self.checkBox_Escalamiento.setChecked(True) if self.fieldListStatus[11] == 1 else self.checkBox_Escalamiento.setChecked(False)
-        self.checkBox_CC.setChecked(True) if self.fieldListStatus[12] == 1 else self.checkBox_CC.setChecked(False)
-        self.checkBox_ArgosCapa.setChecked(True) if self.fieldListStatus[13] == 1 else self.checkBox_ArgosCapa.setChecked(False)
+        self.checkBox_FechayHora.setChecked(True) if self.fieldListStatus[0] == 1 else self.checkBox_FechayHora.setChecked(False)
+        self.checkBox_ID_Usuario.setChecked(True) if self.fieldListStatus[1] == 1 else self.checkBox_ID_Usuario.setChecked(False)
+        self.checkBox_Endpoint.setChecked(True) if self.fieldListStatus[2] == 1 else self.checkBox_Endpoint.setChecked(False)
+        self.checkBox_BU.setChecked(True) if self.fieldListStatus[3] == 1 else self.checkBox_BU.setChecked(False)
+        self.checkBox_Politica.setChecked(True) if self.fieldListStatus[4] == 1 else self.checkBox_Politica.setChecked(False)
+        self.checkBox_Regla.setChecked(True) if self.fieldListStatus[5] == 1 else self.checkBox_Regla.setChecked(False)
+        self.checkBox_CanalDLP.setChecked(True) if self.fieldListStatus[6] == 1 else self.checkBox_CanalDLP.setChecked(False)
+        self.checkBox_Count.setChecked(True) if self.fieldListStatus[7] == 1 else self.checkBox_Count.setChecked(False)
+        self.checkBox_Severidad.setChecked(True) if self.fieldListStatus[8] == 1 else self.checkBox_Severidad.setChecked(False)
+        self.checkBox_AccionDLP.setChecked(True) if self.fieldListStatus[9] == 1 else self.checkBox_AccionDLP.setChecked(False)
+        self.checkBox_Escalamiento.setChecked(True) if self.fieldListStatus[10] == 1 else self.checkBox_Escalamiento.setChecked(False)
+        self.checkBox_CC.setChecked(True) if self.fieldListStatus[11] == 1 else self.checkBox_CC.setChecked(False)
+        self.checkBox_ArgosCapa.setChecked(True) if self.fieldListStatus[12] == 1 else self.checkBox_ArgosCapa.setChecked(False)
+        self.checkBox_IDRegistro.setChecked(True) if self.fieldListStatus[13] == 1 else self.checkBox_IDRegistro.setChecked(False)
         
 
         self.retranslateUi(MainWindow)
