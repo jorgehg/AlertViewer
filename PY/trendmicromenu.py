@@ -1,7 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtQuickWidgets, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 import os, re, win32com.client, database
-from trendmicrotabla import TrendmicroTabla
 
 
 class TrendmicroMenu(object):
@@ -9,7 +8,7 @@ class TrendmicroMenu(object):
     def loadFiles(self):
         warning = QMessageBox()
         warning.setWindowTitle("Aviso")
-        folder_path_emails = os.path.normpath(r"C:\Users\ext_johirayg\Documents\AlertViewer\Mails")
+        folder_path_emails = os.path.normpath(r"C:\Users\Jorge\Documents\AlertViewer\Mails")
         email_list = [file for file in os.listdir(folder_path_emails) if file.endswith(".msg")]
         outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
         db = database.connect()

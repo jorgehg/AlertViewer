@@ -22,57 +22,56 @@ class Main(QtWidgets.QMainWindow):
 
     def open_trendmicromenu(self):
         self.trendmicromenu = QtWidgets.QMainWindow()
-        self.ui = TrendmicroMenu()
-        self.ui.setupUi(self.trendmicromenu)
+        self.ui_trendmicromenu = TrendmicroMenu()
+        self.ui_trendmicromenu.setupUi(self.trendmicromenu)
         self.trendmicromenu.show()
         self.bifurc.hide()
 
-        self.ui.pushButtonSubirArchivos.clicked.connect(self.ui.loadFiles)
-        self.ui.pushButtonTablas.clicked.connect(self.open_trendmicrotabla)
+        self.ui_trendmicromenu.pushButtonSubirArchivos.clicked.connect(self.ui_trendmicromenu.loadFiles)
+        self.ui_trendmicromenu.pushButtonTablas.clicked.connect(self.open_trendmicrotabla)
         #self.ui.pushButtonAlertas.clicked.connect(open_trendmicroalertas)
-        self.ui.pushButtonAtras.clicked.connect(self.back_trendmicromenu)
+        self.ui_trendmicromenu.pushButtonAtras.clicked.connect(self.back_trendmicromenu)
 
     def open_officemenu(self):
         self.officemenu = QtWidgets.QMainWindow()
-        self.ui = OfficeMenu()
-        self.ui.setupUi(self.officemenu)
+        self.ui_officemenu = OfficeMenu()
+        self.ui_officemenu.setupUi(self.officemenu)
         self.officemenu.show()
         self.bifurc.hide()
         #self.ui.pushButtonSubirArchivos.clicked.connect(self.ui.loadFiles)
-        self.ui.pushButtonTablas.clicked.connect(self.open_officetabla)
+        self.ui_officemenu.pushButtonTablas.clicked.connect(self.open_officetabla)
         #self.ui.pushButtonAlertas.clicked.connect(self.open_officealertas)
-        self.ui.pushButtonAtras.clicked.connect(self.back_officemenu)
+        self.ui_officemenu.pushButtonAtras.clicked.connect(self.back_officemenu)
 
     def open_trendmicrotabla(self):
         self.trendmicrotabla = QtWidgets.QMainWindow()
-        self.ui = TrendmicroTabla()
-        self.ui.setupUi(self.trendmicrotabla)
+        self.ui_trendmicrotabla = TrendmicroTabla()
+        self.ui_trendmicrotabla.setupUi(self.trendmicrotabla)
         self.trendmicrotabla.show()
         self.trendmicromenu.hide()
-        self.ui.pushButton_Fieldselector.clicked.connect(self.open_fieldselector)
+        self.ui_trendmicrotabla.pushButton_Fieldselector.clicked.connect(self.open_fieldselector)
         #self.ui.pushButtonAplicar.clicked.connect(self.ui.applyChanges)
         #self.ui.pushButtonLimpiar.clicked.connect(self.ui.cleanChanges)
-        self.ui.pushButtonActualizar.clicked.connect(self.ui.loadData)
-        self.ui.pushButtonAtras.clicked.connect(self.back_trendmicrotabla)
+        self.ui_trendmicrotabla.pushButtonActualizar.clicked.connect(self.ui_trendmicrotabla.loadData)
+        self.ui_trendmicrotabla.pushButtonAtras.clicked.connect(self.back_trendmicrotabla)
 
     def open_officetabla(self):
         self.officetabla = QtWidgets.QMainWindow()
-        self.ui = OfficeTabla()
-        self.ui.setupUi(self.officetabla)
+        self.ui_officetabla = OfficeTabla()
+        self.ui_officetabla.setupUi(self.officetabla)
         self.officetabla.show()
         self.officemenu.hide()
-        #self.ui.pushButtonActualizar.clicked.connect(self.ui.loadData)
-        self.ui.pushButtonAtras.clicked.connect(self.back_officetabla)
+        #self.ui_officetabla.pushButtonActualizar.clicked.connect(self.ui_officetabla.loadData)
+        self.ui_officetabla.pushButtonAtras.clicked.connect(self.back_officetabla)
 
     def open_fieldselector(self):
         self.fieldselector = QtWidgets.QMainWindow()
-        self.ui = FieldSelector()
-        self.ui.setupUi(self.fieldselector)
+        self.ui_fieldselector = FieldSelector()
+        self.ui_fieldselector.setupUi(self.fieldselector)
         self.fieldselector.show()
-        self.ui.pushButtonAplicar.clicked.connect(self.apply_fieldselector)
+        self.ui_fieldselector.pushButtonAplicar.clicked.connect(self.apply_fieldselector)
         
-
-    
+        
     def back_trendmicromenu(self):
         self.bifurc.show()
         self.trendmicromenu.hide()
@@ -80,19 +79,22 @@ class Main(QtWidgets.QMainWindow):
     def back_officemenu(self):
         self.bifurc.show()
         self.officemenu.hide()
+        
 
     def back_trendmicrotabla(self):
         self.trendmicromenu.show()
         self.trendmicrotabla.hide()
+        
 
     def back_officetabla(self):
         self.officemenu.show()
-        self.officetabla.show()
-
+        self.officetabla.hide()
+        
 
     def apply_fieldselector(self):
-        self.ui.setFields
+        self.ui_fieldselector.setFields()
         self.fieldselector.hide()
+        
 
 
 

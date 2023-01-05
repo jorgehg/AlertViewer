@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import database
-from fieldselector import FieldSelector
 
 class TrendmicroTabla(object):
     

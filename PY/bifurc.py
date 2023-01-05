@@ -1,6 +1,4 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from trendmicromenu import TrendmicroMenu
-from officemenu import OfficeMenu
 
 class Bifurc(object):
 
