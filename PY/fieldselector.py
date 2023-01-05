@@ -38,8 +38,16 @@ class FieldSelector(object):
         self.fieldListStatus[12] = 1 if self.checkBox_ArgosCapa.isChecked() else 0
         self.fieldListStatus[13] = 1 if self.checkBox_IDRegistro.isChecked() else 0
 
-        print(self.fieldListStatus)
-        print("vetealaverga")
+        counter = 0
+        fieldListNamesUsed = []
+        for i in self.fieldListStatus:
+            if i == 1:
+                fieldListNamesUsed.append(self.fieldListNames[counter])
+            counter+=1
+
+        return fieldListNamesUsed
+            
+
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
