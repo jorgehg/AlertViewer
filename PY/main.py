@@ -43,11 +43,11 @@ class Main(QtWidgets.QMainWindow):
         #self.ui.pushButtonAlertas.clicked.connect(self.open_officealertas)
         self.ui_officemenu.pushButtonAtras.clicked.connect(self.back_officemenu)
 
-    def open_trendmicrotabla(self, fieldListNames):
+    def open_trendmicrotabla(self):
         self.trendmicrotabla = QtWidgets.QMainWindow()
         self.ui_trendmicrotabla = TrendmicroTabla()
         self.ui_trendmicrotabla.setupUi(self.trendmicrotabla)
-        self.ui_trendmicrotabla.updateTable(fieldListNames)
+        self.ui_trendmicrotabla.updateTable(False)
         self.trendmicrotabla.show()
         self.trendmicromenu.hide()
         self.ui_trendmicrotabla.pushButton_Fieldselector.clicked.connect(self.open_fieldselector)
@@ -71,8 +71,7 @@ class Main(QtWidgets.QMainWindow):
         self.ui_fieldselector.setupUi(self.fieldselector)
         self.fieldselector.show()
         self.ui_fieldselector.pushButtonAplicar.clicked.connect(self.apply_fieldselector)
-        print(self.ui_fieldselector.fieldListStatus)
-        
+        self.ui_fieldselector.pushButtonSwitch.clicked.connect(self.ui_fieldselector.switcher)
         
     def back_trendmicromenu(self):
         self.bifurc.show()
@@ -95,8 +94,11 @@ class Main(QtWidgets.QMainWindow):
 
     def apply_fieldselector(self):
         print(self.ui_fieldselector.setFields())
-        self.open_trendmicrotabla(self.ui_fieldselector.setFields())
+        self.ui_trendmicrotabla.updateTable(self.ui_fieldselector.setFields())
         self.fieldselector.hide()
+
+    #def switch_fieldselector(self):
+        
         
 
 

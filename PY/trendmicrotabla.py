@@ -1,6 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import database
-from fieldselector import FieldSelector
 
 class TrendmicroTabla(object):
     
@@ -16,6 +15,7 @@ class TrendmicroTabla(object):
 
         counter = 0
         _translate = QtCore.QCoreApplication.translate
+        
         sqlquery = ""
 
         for i in fieldListNames:
@@ -29,12 +29,14 @@ class TrendmicroTabla(object):
         sqlquery = sqlquery[:-1]
 
         sqlquery  = "SELECT"+sqlquery+" FROM alertassoc"
+        self.pushButtonLimpiar.setText(_translate("MainWindow", sqlquery))
         
         db = database.connect()
         cur = db.cursor()
 
         self.tableWidget.setRowCount(50)
         tableRow = 0
+        print(sqlquery)
 
         for row in cur.execute(sqlquery):
             counter = 0
@@ -42,6 +44,8 @@ class TrendmicroTabla(object):
                 self.tableWidget.setItem(tableRow, counter, QtWidgets.QTableWidgetItem(str(i)))
                 counter +=1
             tableRow+=1
+
+        self.centralwidget.update()
                 
 
 
@@ -127,7 +131,7 @@ class TrendmicroTabla(object):
         self.pushButtonAtras.setText(_translate("MainWindow", "Atrás"))
         self.pushButton_Fieldselector.setText(_translate("MainWindow", "Seleccionar campos"))
         self.pushButtonAplicar.setText(_translate("MainWindow", "Aplicar"))
-        self.pushButtonLimpiar.setText(_translate("MainWindow", "Limpiar"))
+        
 
 if __name__ == "__main__":
     import sys
