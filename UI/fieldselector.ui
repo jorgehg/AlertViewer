@@ -33,17 +33,17 @@
      <property name="spacing">
       <number>0</number>
      </property>
-     <item row="2" column="1">
-      <widget class="QCheckBox" name="checkBox_CanalDLP">
-       <property name="text">
-        <string>Canal DLP</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="1">
       <widget class="QCheckBox" name="checkBox_BU">
        <property name="text">
         <string>BU</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QCheckBox" name="checkBox_CanalDLP">
+       <property name="text">
+        <string>Canal DLP</string>
        </property>
       </widget>
      </item>
@@ -54,24 +54,17 @@
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
-      <widget class="QCheckBox" name="checkBox_AccionDLP">
-       <property name="text">
-        <string>Accion DLP</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="checkBox_ID_Usuario">
-       <property name="text">
-        <string>ID Usuario</string>
-       </property>
-      </widget>
-     </item>
      <item row="3" column="0">
       <widget class="QCheckBox" name="checkBox_Severidad">
        <property name="text">
         <string>Severidad</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QCheckBox" name="checkBox_Regla">
+       <property name="text">
+        <string>Regla</string>
        </property>
       </widget>
      </item>
@@ -82,10 +75,17 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
-      <widget class="QCheckBox" name="checkBox_Regla">
+     <item row="0" column="2">
+      <widget class="QCheckBox" name="checkBox_ID_Usuario">
        <property name="text">
-        <string>Regla</string>
+        <string>ID Usuario</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QCheckBox" name="checkBox_AccionDLP">
+       <property name="text">
+        <string>Accion DLP</string>
        </property>
       </widget>
      </item>
@@ -110,6 +110,13 @@
        </property>
       </widget>
      </item>
+     <item row="1" column="0">
+      <widget class="QCheckBox" name="checkBox_Endpoint">
+       <property name="text">
+        <string>Endpoint</string>
+       </property>
+      </widget>
+     </item>
      <item row="4" column="0">
       <widget class="QCheckBox" name="checkBox_CC">
        <property name="text">
@@ -124,17 +131,17 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QCheckBox" name="checkBox_Endpoint">
-       <property name="text">
-        <string>Endpoint</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
+     <item row="5" column="2">
       <widget class="QPushButton" name="pushButtonAplicar">
        <property name="text">
         <string>Aplicar</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Todos/Ninguno</string>
        </property>
       </widget>
      </item>
