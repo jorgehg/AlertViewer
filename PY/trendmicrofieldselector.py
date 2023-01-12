@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class FieldSelector(object):
+class TrendmicroFieldSelector(object):
     
     """
     0 = registro_id
@@ -174,7 +174,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = FieldSelector()
+    ui = TrendmicroFieldSelector()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())

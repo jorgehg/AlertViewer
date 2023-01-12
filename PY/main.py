@@ -4,7 +4,8 @@ from trendmicromenu import TrendmicroMenu
 from officemenu import OfficeMenu
 from trendmicrotabla import TrendmicroTabla
 from officetabla import OfficeTabla
-from fieldselector import FieldSelector
+from trendmicrofieldselector import TrendmicroFieldSelector
+from officefieldselector import OfficeFieldSelector
 
 
 class Main(QtWidgets.QMainWindow):
@@ -38,7 +39,7 @@ class Main(QtWidgets.QMainWindow):
         self.ui_officemenu.setupUi(self.officemenu)
         self.officemenu.show()
         self.bifurc.hide()
-        #self.ui.pushButtonSubirArchivos.clicked.connect(self.ui.loadFiles)
+        self.ui_officemenu.pushButtonSubirArchivos.clicked.connect(self.ui_officemenu.loadFiles)
         self.ui_officemenu.pushButtonTablas.clicked.connect(self.open_officetabla)
         #self.ui.pushButtonAlertas.clicked.connect(self.open_officealertas)
         self.ui_officemenu.pushButtonAtras.clicked.connect(self.back_officemenu)
@@ -50,7 +51,7 @@ class Main(QtWidgets.QMainWindow):
         self.ui_trendmicrotabla.updateTable(False)
         self.trendmicrotabla.show()
         self.trendmicromenu.hide()
-        self.ui_trendmicrotabla.pushButton_Fieldselector.clicked.connect(self.open_fieldselector)
+        self.ui_trendmicrotabla.pushButton_Fieldselector.clicked.connect(self.open_trendmicrofieldselector)
         #self.ui.pushButtonAplicar.clicked.connect(self.ui.applyChanges)
         #self.ui.pushButtonLimpiar.clicked.connect(self.ui.cleanChanges)
         #self.ui_trendmicrotabla.pushButtonActualizar.clicked.connect(self.ui_trendmicrotabla.loadData)
@@ -60,18 +61,29 @@ class Main(QtWidgets.QMainWindow):
         self.officetabla = QtWidgets.QMainWindow()
         self.ui_officetabla = OfficeTabla()
         self.ui_officetabla.setupUi(self.officetabla)
+        self.ui_officetabla.updateTable(False)
         self.officetabla.show()
         self.officemenu.hide()
+        self.ui_officetabla.pushButton_Fieldselector.clicked.connect(self.open_officefieldselector)
         #self.ui_officetabla.pushButtonActualizar.clicked.connect(self.ui_officetabla.loadData)
         self.ui_officetabla.pushButtonAtras.clicked.connect(self.back_officetabla)
 
-    def open_fieldselector(self):
-        self.fieldselector = QtWidgets.QMainWindow()
-        self.ui_fieldselector = FieldSelector()
-        self.ui_fieldselector.setupUi(self.fieldselector)
-        self.fieldselector.show()
-        self.ui_fieldselector.pushButtonAplicar.clicked.connect(self.apply_fieldselector)
-        self.ui_fieldselector.pushButtonSwitch.clicked.connect(self.ui_fieldselector.switcher)
+    def open_trendmicrofieldselector(self):
+        self.trendmicrofieldselector = QtWidgets.QMainWindow()
+        self.ui_trendmicrofieldselector = TrendmicroFieldSelector()
+        self.ui_trendmicrofieldselector.setupUi(self.trendmicrofieldselector)
+        self.trendmicrofieldselector.show()
+        self.ui_trendmicrofieldselector.pushButtonAplicar.clicked.connect(self.apply_trendmicrofieldselector)
+        self.ui_trendmicrofieldselector.pushButtonSwitch.clicked.connect(self.ui_trendmicrofieldselector.switcher)
+
+    def open_officefieldselector(self):
+        self.officefieldselector = QtWidgets.QMainWindow()
+        self.ui_officefieldselector = OfficeFieldSelector()
+        self.ui_officefieldselector.setupUi(self.officefieldselector)
+        self.officefieldselector.show()
+        self.ui_officefieldselector.pushButtonAplicar.clicked.connect(self.apply_officefieldselector)
+        self.ui_officefieldselector.pushButtonSwitch.clicked.connect(self.ui_officefieldselector.switcher)
+
         
     def back_trendmicromenu(self):
         self.bifurc.show()
@@ -92,10 +104,14 @@ class Main(QtWidgets.QMainWindow):
         self.officetabla.hide()
         
 
-    def apply_fieldselector(self):
+    def apply_trendmicrofieldselector(self):
         print(self.ui_fieldselector.setFields())
-        self.ui_trendmicrotabla.updateTable(self.ui_fieldselector.setFields())
-        self.fieldselector.hide()
+        self.ui_trendmicrotabla.updateTable(self.ui_trendmicrofieldselector.setFields())
+        self.trendmicrofieldselector.hide()
+
+    def apply_officefieldselector(self):
+        self.ui_officetabla.updateTable(self.ui_officefieldselector.setFields())
+        self.officefieldselector.hide()
 
     #def switch_fieldselector(self):
         

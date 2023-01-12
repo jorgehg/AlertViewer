@@ -22,3 +22,26 @@ def createTableTrendmicro():
             "argos_capa"	TEXT,
             PRIMARY KEY("registro_id" AUTOINCREMENT)
         )""")
+
+def createTableOffice():
+    db = connect()
+    db.execute("""CREATE TABLE IF NOT EXISTS "alertasoffice" (
+            "registro_id"	INTEGER,
+            "Fecha_Hora" TEXT,
+            "Dia_Habil"	TEXT,
+            "Usuario"	TEXT,
+            "Email"	TEXT,
+            "Destinatario"	TEXT,
+            "BU" TEXT,
+            "Pais"	TEXT,
+            "Politica"	INTEGER,
+            "Regla"	TEXT,
+            "Accion"	TEXT,
+            "Producto"	TEXT,
+            "Severidad"	TEXT,
+            "Asunto"	TEXT,
+            "Filename" TEXT,
+            "Extension" TEXT,
+            "TipoDataConfidencial" TEXT,
+            PRIMARY KEY("registro_id" AUTOINCREMENT)
+        )""")

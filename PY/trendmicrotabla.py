@@ -6,10 +6,7 @@ class TrendmicroTabla(object):
     def updateTable(self, fieldListNames):
         if fieldListNames == False:
             fieldListNames = ["registro_id", "Fecha_y_Hora", "user_ID", "Endpoint", "BU", "Politica", "Regla", "Canal_DLP", "count", "severidad", "Accion_DLP", "escalamiento", "CC", "argos_capa"]
-        self.tableWidget = QtWidgets.QTableWidget(self.widget)
-        self.tableWidget.setGeometry(QtCore.QRect(20, 170, 1321, 541))
-        self.tableWidget.setObjectName("tableWidget")
-
+        
         print(fieldListNames)
         self.tableWidget.setColumnCount(len(fieldListNames))
 
@@ -17,19 +14,21 @@ class TrendmicroTabla(object):
         _translate = QtCore.QCoreApplication.translate
         
         sqlquery = ""
+        header = self.tableWidget.horizontalHeader()
 
         for i in fieldListNames:
             item = QtWidgets.QTableWidgetItem()
             self.tableWidget.setHorizontalHeaderItem(counter, item)
             item = self.tableWidget.horizontalHeaderItem(counter)
             item.setText(_translate("MainWindow", i))
+            header.setSectionResizeMode(counter, QtWidgets.QHeaderView.Stretch)
             counter+=1
             sqlquery = sqlquery + " " + i + ","
 
         sqlquery = sqlquery[:-1]
 
         sqlquery  = "SELECT"+sqlquery+" FROM alertassoc"
-        self.pushButtonLimpiar.setText(_translate("MainWindow", sqlquery))
+        
         
         db = database.connect()
         cur = db.cursor()
@@ -47,8 +46,6 @@ class TrendmicroTabla(object):
 
         self.centralwidget.update()
                 
-
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1366, 768)
@@ -57,7 +54,10 @@ class TrendmicroTabla(object):
         self.widget = QtWidgets.QWidget(self.centralwidget)
         self.widget.setGeometry(QtCore.QRect(0, 0, 1366, 768))
         self.widget.setStyleSheet("background-color: rgb(237, 237, 237);")
-        self.widget.setObjectName("widget")      
+        self.widget.setObjectName("widget") 
+        self.tableWidget = QtWidgets.QTableWidget(self.widget)
+        self.tableWidget.setGeometry(QtCore.QRect(20, 170, 1321, 541))
+        self.tableWidget.setObjectName("tableWidget")     
         self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.widget)
         self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(1059, 10, 271, 81))
         self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
@@ -125,12 +125,12 @@ class TrendmicroTabla(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Trendmicro - Tabla"))
-        
+        MainWindow.setWindowTitle(_translate("MainWindow", "Trendmicro - Tabla")) 
         self.pushButtonActualizar.setText(_translate("MainWindow", "Actualizar"))
         self.pushButtonAtras.setText(_translate("MainWindow", "Atrás"))
         self.pushButton_Fieldselector.setText(_translate("MainWindow", "Seleccionar campos"))
         self.pushButtonAplicar.setText(_translate("MainWindow", "Aplicar"))
+        self.pushButtonLimpiar.setText(_translate("MainWindow", "Limpiar"))
         
 
 if __name__ == "__main__":

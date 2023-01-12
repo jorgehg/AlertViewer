@@ -1,10 +1,6 @@
-list = ["registro_id", "Fecha_y_Hora", "user_ID", "Endpoint", "BU", "Politica", "Regla", "Canal_DLP", "count", "severidad", "Accion_DLP", "escalamiento", "CC", "argos_capa"]
+import os
 
-s = ""
-for i in list:
-    s = s + " " + i + ","
+folder_path_emails = os.path.normpath(r"C:\Users\ext_johirayg\Documents\AlertViewer\office")
+email_list = [file for file in os.listdir(folder_path_emails) if file.endswith(".csv")]
 
-s = s[:-1]
-
-s  = "SELECT"+s+" FROM alertassoc"
-print(s)
+print(email_list)

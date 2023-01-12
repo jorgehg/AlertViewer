@@ -1,8 +1,24 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from officetabla import OfficeTabla
-
+import os, csv, database
 
 class OfficeMenu(object):
+
+    def loadFiles(self):
+        folder_path_emails = os.path.normpath(r"C:\Users\ext_johirayg\Documents\AlertViewer\office")
+        email_list = [file for file in os.listdir(folder_path_emails) if file.endswith(".csv")]
+        db = database.connect()
+        database.createTableOffice()
+
+
+        for i, _ in enumerate(email_list):
+            with open(os.path.join(folder_path_emails,email_list[i]), 'r') as file:
+                reader = list(csv.reader(file))
+                for row in reader[1:]:
+                    print(row)
+                    input_list = str(row).split(",")
+                    db.execute("INSERT INTO alertasoffice (Fecha_Hora,Dia_Habil,Usuario,Email,Destinatario,BU,Pais,Politica,Regla,Accion,Producto,Severidad,Asunto,Filename,Extension,TipoDataConfidencial) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(input_list[0],input_list[1],input_list[2],input_list[3],input_list[4],input_list[5],input_list[6],input_list[7],input_list[8],input_list[9],input_list[10], input_list[11],input_list[12],input_list[13],input_list[14],input_list[15]))
+                    db.commit()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
