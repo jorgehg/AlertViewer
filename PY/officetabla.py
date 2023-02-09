@@ -7,7 +7,8 @@ class OfficeTabla(object):
     def updateTable(self,fieldListNames):
         if fieldListNames == False:
             fieldListNames = ["registro_id","Fecha_Hora","Dia_Habil","Usuario","Email","Destinatario","BU","Pais","Politica","Regla","Accion","Producto","Severidad","Asunto","Filename","Extension","TipoDataConfidencial"]
-        
+
+        comboBoxContent = self.comboBoxBuscarCampo.currentText() 
         print(fieldListNames)
         self.tableWidget.setColumnCount(len(fieldListNames))
 
@@ -16,25 +17,31 @@ class OfficeTabla(object):
         
         sqlquery = ""
         header = self.tableWidget.horizontalHeader()
+        self.comboBoxBuscarCampo.clear()
 
         for i in fieldListNames:
             item = QtWidgets.QTableWidgetItem()
             self.tableWidget.setHorizontalHeaderItem(counter, item)
             item = self.tableWidget.horizontalHeaderItem(counter)
             item.setText(_translate("MainWindow", i))
-            header.setSectionResizeMode(counter, QtWidgets.QHeaderView.Stretch)
+            self.comboBoxBuscarCampo.addItem(i)
+            header.setSectionResizeMode(counter, QtWidgets.QHeaderView.ResizeToContents)
             counter+=1
             sqlquery = sqlquery + " " + i + ","
 
         sqlquery = sqlquery[:-1]
 
-        sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice"
+        if self.lineEditBuscarCampo.text() == '':
+            sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice"
+        else:
+            sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"';" 
+        
         
         db = database.connect()
         cur = db.cursor()
 
-        self.tableWidget.setRowCount(50)
         tableRow = 0
+        self.tableWidget.setRowCount(500)
         print(sqlquery)
 
         for row in cur.execute(sqlquery):
@@ -43,6 +50,8 @@ class OfficeTabla(object):
                 self.tableWidget.setItem(tableRow, counter, QtWidgets.QTableWidgetItem(str(i)))
                 counter +=1
             tableRow+=1
+            print(row)
+        self.tableWidget.setRowCount(tableRow)
 
         self.centralwidget.update()
 
@@ -134,20 +143,7 @@ class OfficeTabla(object):
         self.pushButtonLimpiar.setObjectName("pushButtonLimpiar")
         self.horizontalLayout_3.addWidget(self.pushButtonLimpiar)
         MainWindow.setCentralWidget(self.centralwidget)
-        self.comboBoxBuscarCampo.addItem('ID Registro')
-        self.comboBoxBuscarCampo.addItem('Fecha y Hora')
-        self.comboBoxBuscarCampo.addItem('ID Usuario')
-        self.comboBoxBuscarCampo.addItem('Endpoint')
-        self.comboBoxBuscarCampo.addItem('BU')
-        self.comboBoxBuscarCampo.addItem('Politica')
-        self.comboBoxBuscarCampo.addItem('Regla')
-        self.comboBoxBuscarCampo.addItem('Canal DLP')
-        self.comboBoxBuscarCampo.addItem('Count')
-        self.comboBoxBuscarCampo.addItem('Severidad')
-        self.comboBoxBuscarCampo.addItem('Accion DLP')
-        self.comboBoxBuscarCampo.addItem('Escalamiento')
-        self.comboBoxBuscarCampo.addItem('CC')
-        self.comboBoxBuscarCampo.addItem('Argos Capa')
+        
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

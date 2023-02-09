@@ -16,8 +16,11 @@ class OfficeMenu(object):
                 reader = list(csv.reader(file))
                 for row in reader[1:]:
                     print(row)
-                    input_list = str(row).split(",")
-                    db.execute("INSERT INTO alertasoffice (Fecha_Hora,Dia_Habil,Usuario,Email,Destinatario,BU,Pais,Politica,Regla,Accion,Producto,Severidad,Asunto,Filename,Extension,TipoDataConfidencial) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(input_list[0],input_list[1],input_list[2],input_list[3],input_list[4],input_list[5],input_list[6],input_list[7],input_list[8],input_list[9],input_list[10], input_list[11],input_list[12],input_list[13],input_list[14],input_list[15]))
+                    rowString = str(row)
+                    rowString = rowString.replace("'", '')
+                    rowString = rowString.replace("[", '')
+                    input_list = rowString.split(",")
+                    db.execute("INSERT INTO alertasoffice (Fecha_Hora,Dia_Habil,Usuario,Email,Destinatario,BU,Pais,Politica,Regla,Accion,Producto,Severidad,Asunto,Filename,Extension,TipoDataConfidencial) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(input_list[0],input_list[1][1:],input_list[2][1:],input_list[3][1:],input_list[4][1:],input_list[5][1:],input_list[6][1:],input_list[7][1:],input_list[8][1:],input_list[9][1:],input_list[10][1:], input_list[11][1:],input_list[12][1:],input_list[13][1:],input_list[14][1:],input_list[15][1:]))
                     db.commit()
 
     def setupUi(self, MainWindow):

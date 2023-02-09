@@ -52,7 +52,7 @@ class Main(QtWidgets.QMainWindow):
         self.trendmicrotabla.show()
         self.trendmicromenu.hide()
         self.ui_trendmicrotabla.pushButton_Fieldselector.clicked.connect(self.open_trendmicrofieldselector)
-        #self.ui.pushButtonAplicar.clicked.connect(self.ui.applyChanges)
+        self.ui_trendmicrotabla.pushButtonAplicar.clicked.connect(self.applyChanges_trendmicrotabla)
         #self.ui.pushButtonLimpiar.clicked.connect(self.ui.cleanChanges)
         #self.ui_trendmicrotabla.pushButtonActualizar.clicked.connect(self.ui_trendmicrotabla.loadData)
         self.ui_trendmicrotabla.pushButtonAtras.clicked.connect(self.back_trendmicrotabla)
@@ -65,6 +65,7 @@ class Main(QtWidgets.QMainWindow):
         self.officetabla.show()
         self.officemenu.hide()
         self.ui_officetabla.pushButton_Fieldselector.clicked.connect(self.open_officefieldselector)
+        self.ui_officetabla.pushButtonAplicar.clicked.connect(self.applyChanges_officetabla)
         #self.ui_officetabla.pushButtonActualizar.clicked.connect(self.ui_officetabla.loadData)
         self.ui_officetabla.pushButtonAtras.clicked.connect(self.back_officetabla)
 
@@ -105,13 +106,28 @@ class Main(QtWidgets.QMainWindow):
         
 
     def apply_trendmicrofieldselector(self):
-        print(self.ui_fieldselector.setFields())
         self.ui_trendmicrotabla.updateTable(self.ui_trendmicrofieldselector.setFields())
         self.trendmicrofieldselector.hide()
 
     def apply_officefieldselector(self):
         self.ui_officetabla.updateTable(self.ui_officefieldselector.setFields())
         self.officefieldselector.hide()
+
+    def applyChanges_trendmicrotabla(self):
+        try:
+            self.ui_trendmicrotabla.updateTable(self.ui_trendmicrofieldselector.setFields())
+        except: 
+            self.ui_trendmicrotabla.updateTable(False)
+
+    def applyChanges_officetabla(self):
+        try:
+            self.ui_officetabla.updateTable(self.ui_officefieldselector.setFields())
+        except: 
+            self.ui_officetabla.updateTable(False)
+
+
+
+        
 
     #def switch_fieldselector(self):
         
