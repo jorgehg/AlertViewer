@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 from bifurc import Bifurc
 from trendmicromenu import TrendmicroMenu
 from officemenu import OfficeMenu
@@ -53,7 +54,7 @@ class Main(QtWidgets.QMainWindow):
         self.trendmicromenu.hide()
         self.ui_trendmicrotabla.pushButton_Fieldselector.clicked.connect(self.open_trendmicrofieldselector)
         self.ui_trendmicrotabla.pushButtonAplicar.clicked.connect(self.applyChanges_trendmicrotabla)
-        #self.ui.pushButtonLimpiar.clicked.connect(self.ui.cleanChanges)
+        #self.ui_trendmicrotabla.pushButtonLimpiar.clicked.connect(self.ui_trendmicrotabla.updateTable(False))
         #self.ui_trendmicrotabla.pushButtonActualizar.clicked.connect(self.ui_trendmicrotabla.loadData)
         self.ui_trendmicrotabla.pushButtonAtras.clicked.connect(self.back_trendmicrotabla)
 
@@ -125,6 +126,14 @@ class Main(QtWidgets.QMainWindow):
         except: 
             self.ui_officetabla.updateTable(False)
 
+    
+    def showDialog(self):
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText("Message box pop up window")
+        msgBox.setWindowTitle("QMessageBox Example")
+        msgBox.exec()
+
 
 
         
@@ -142,4 +151,4 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     window = Main()
-    input()
+    sys.exit(app.exec_())

@@ -6,17 +6,18 @@ import os, re, win32com.client, database
 class TrendmicroMenu(object):
     
     def loadFiles(self):
-        warning = QMessageBox()
-        warning.setWindowTitle("Aviso")
+        dialog = QMessageBox()
+        dialog.setWindowTitle("Importe de datos")
+        
         folder_path_emails = os.path.normpath(r"C:\Users\ext_johirayg\Documents\AlertViewer\trendmicro")
-        email_list = [file for file in os.listdir(folder_path_emails) if file.endswith(".msg")]
+        file_list = [file for file in os.listdir(folder_path_emails) if file.endswith(".msg")]
         outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
         db = database.connect()
         database.createTableTrendmicro()
 
-        for i, _ in enumerate(email_list):
+        for i, _ in enumerate(file_list):
             print(i)
-            msg = outlook.OpenSharedItem(os.path.join(folder_path_emails,email_list[i]))
+            msg = outlook.OpenSharedItem(os.path.join(folder_path_emails,file_list[i]))
             text = msg.HTMLBody
             print(msg.SentOn)
             body = re.search(r"Fecha_y_Hora</p([\s\S]*?)Data<", text)
@@ -27,11 +28,11 @@ class TrendmicroMenu(object):
             body = body.replace("/pre>",'')
             input_list = body.split("<")
             db.execute("INSERT INTO alertassoc (Fecha_y_Hora,user_ID,Endpoint,BU,Politica,Regla,Canal_DLP,count,severidad,Accion_DLP,escalamiento,CC,argos_capa) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",(str(msg.sentOn),input_list[0],input_list[1],input_list[2],input_list[3],input_list[4],input_list[5],input_list[6],input_list[7],input_list[8],input_list[9],input_list[10], input_list[11]))
-            db.commit()
             print(input_list)
 
-        warning.setText("Se han cargado con éxito "+str(len(email_list))+" registros.")
-        x = warning.exec_()
+        db.commit()
+        dialog.setText("Se han cargado con éxito "+str(len(file_list))+" registros.")
+        dialog.exec_()
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
