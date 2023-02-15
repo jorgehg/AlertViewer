@@ -9,7 +9,7 @@ class TrendmicroMenu(object):
         dialog = QMessageBox()
         dialog.setWindowTitle("Importe de datos")
         
-        folder_path_emails = os.path.normpath(r"C:\Users\ext_johirayg\Documents\AlertViewer\trendmicro")
+        folder_path_emails = os.path.normpath(r"C:\Users\Jorge\Documents\AlertViewer\trendmicro")
         file_list = [file for file in os.listdir(folder_path_emails) if file.endswith(".msg")]
         outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
         db = database.connect()

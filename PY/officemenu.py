@@ -14,7 +14,7 @@ class OfficeMenu(object):
         file_list = []
         dialog.setWindowTitle("Importe de datos")
         dialog.setIcon(QMessageBox.Information)
-        folder_path_emails = os.path.normpath(r"C:\Users\ext_johirayg\Documents\AlertViewer\office")
+        folder_path_emails = os.path.normpath(r"C:\Users\Jorge\Documents\AlertViewer\office")
         outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
         inbox = outlook.GetDefaultFolder(6)
         messages = inbox.Items
@@ -23,13 +23,13 @@ class OfficeMenu(object):
 
         for message in messages:
             if message.Subject.startswith('RV: Splunk Reporte DLP Office 365 - FIF CMR MX') and message.Unread == True:
-                message.Unread = False
                 for attachment in message.Attachments: 
                     if str(attachment.FileName).endswith(".csv"):
                         try:
                             attachment.SaveASFile(os.path.join(folder_path_emails, attachment.FileName)) 
                             file_list.append(attachment.FileName)
                             print(attachment.FileName)
+                            message.Unread = False
                         except Exception as e:
                             print(e)
 

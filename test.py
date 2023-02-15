@@ -3,52 +3,53 @@ from PyQt5.QtWidgets import QMessageBox
 import os, re, win32com.client, sqlite3, csv
 
 db = sqlite3.connect("datatest.db")
-db.execute("""CREATE TABLE IF NOT EXISTS "alertasoffice" (
+db.execute("""CREATE TABLE IF NOT EXISTS "alertassoc" (
             "registro_id"	INTEGER,
-            "Fecha_Hora" TEXT,
-            "Dia_Habil"	TEXT,
-            "Usuario"	TEXT,
-            "Email"	TEXT,
-            "Destinatario"	TEXT,
-            "BU" TEXT,
-            "Pais"	TEXT,
-            "Politica"	INTEGER,
-            "Regla"	TEXT,
-            "Accion"	TEXT,
-            "Producto"	TEXT,
+            "Fecha_y_Hora" TEXT,
+            "BU"	TEXT,
+            "User_ID"	TEXT,
+            "Endpoint"	TEXT,
+            "Politica"	TEXT,
+            "Regla" TEXT,
+            "Template"	TEXT,
             "Severidad"	TEXT,
-            "Asunto"	TEXT,
-            "Filename" TEXT,
+            "Accion_DLP"	TEXT,
+            "Canal_DLP"	TEXT,
+            "Fileserver"	TEXT,
+            "File_Path"	TEXT,
+            "Filename"	TEXT,
             "Extension" TEXT,
-            "TipoDataConfidencial" TEXT,
+            "Request" TEXT,
+            "Asunto" TEXT,
+            "Remitente" TEXT,
+            "Destinatario_Dominio" TEXT,
+            "Destinatario" TEXT,
             PRIMARY KEY("registro_id" AUTOINCREMENT)
         )""")
-
 
 registerCount = 0
 fileCount = 0
 errorCount = 0
 resultText = ''
+file_list = []
 
-folder_path_emails = os.path.normpath(r"C:\Users\ext_johirayg\Documents\AlertViewer\office")
+folder_path_emails = os.path.normpath(r"C:\Users\Jorge\Documents\AlertViewer\trendmicro")
 outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
 inbox = outlook.GetDefaultFolder(6)
 messages = inbox.Items
 
-
-
-
 for message in messages:
-    if message.Subject.startswith('RV: Splunk Reporte DLP Office 365 - FIF CMR MX') and message.Unread == True:
-        message.Unread = False
-        print(message)
-        for attachment in message.Attachments: 
-            if str(attachment.FileName).endswith(".csv"):
-                attachment.SaveASFile(os.path.join(folder_path_emails, attachment.FileName)) 
+            if message.Subject.startswith('RV: Splunk Report: Reporte DLP Trend Micro - FIF CMR MX') and message.Unread == True:
+                for attachment in message.Attachments: 
+                    if str(attachment.FileName).endswith(".csv"):
+                        try:
+                            attachment.SaveASFile(os.path.join(folder_path_emails, attachment.FileName)) 
+                            file_list.append(attachment.FileName)
+                            print(attachment.FileName)
+                            message.Unread = False
+                        except Exception as e:
+                            print(e)
 
-
-
-file_list = [file for file in os.listdir(folder_path_emails) if file.endswith(".csv")]
 for i, _ in enumerate(file_list):
             with open(os.path.join(folder_path_emails,file_list[i]), 'r') as file:
                 try:
@@ -63,12 +64,16 @@ for i, _ in enumerate(file_list):
                     rowString = rowString.replace("'", '')
                     rowString = rowString.replace("[", '')
                     input_list = rowString.split(",")
-                    db.execute("INSERT INTO alertasoffice (Fecha_Hora,Dia_Habil,Usuario,Email,Destinatario,BU,Pais,Politica,Regla,Accion,Producto,Severidad,Asunto,Filename,Extension,TipoDataConfidencial) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(input_list[0],input_list[1][1:],input_list[2][1:],input_list[3][1:],input_list[4][1:],input_list[5][1:],input_list[6][1:],input_list[7][1:],input_list[8][1:],input_list[9][1:],input_list[10][1:], input_list[11][1:],input_list[12][1:],input_list[13][1:],input_list[14][1:],input_list[15][1:]))
+                    db.execute("INSERT INTO alertassoc (Fecha_y_Hora,BU,User_ID,Endpoint,Politica,Regla,Template,Severidad,Accion_DLP,Canal_DLP,Fileserver,File_Path,Filename,Extension,Request,Asunto,Remitente,Destinatario_Dominio,Destinatario) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(input_list[0],input_list[1],input_list[2],input_list[3],input_list[4],input_list[5],input_list[6],input_list[7],input_list[8],input_list[9],input_list[10], input_list[11],input_list[12],input_list[13],input_list[14],input_list[15],input_list[16],input_list[17],input_list[18]))
                     #print(row)
                     registerCount+=1
-            print(file_list[i])
+            #print(file_list[i])
             fileCount+=1
-        
+
 db.commit()
-print("Se han cargado con éxito "+str(fileCount)+" archivos con "+str(registerCount)+" registros con "+str(errorCount)+" error(es)."+resultText)
+print(("Se han cargado con éxito "+str(fileCount)+" archivos con "+str(registerCount)+" registros con "+str(errorCount)+" error(es)."+resultText))
+
+
+
+
     
