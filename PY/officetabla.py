@@ -41,7 +41,7 @@ class OfficeTabla(object):
         cur = db.cursor()
 
         tableRow = 0
-        self.tableWidget.setRowCount(500)
+        self.tableWidget.setRowCount(10000)
         print(sqlquery)
 
         for row in cur.execute(sqlquery):

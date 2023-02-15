@@ -49,12 +49,12 @@ class Main(QtWidgets.QMainWindow):
         self.trendmicrotabla = QtWidgets.QMainWindow()
         self.ui_trendmicrotabla = TrendmicroTabla()
         self.ui_trendmicrotabla.setupUi(self.trendmicrotabla)
-        self.ui_trendmicrotabla.updateTable(False)
+        self.ui_trendmicrotabla.updateTable(False,1)
         self.trendmicrotabla.show()
         self.trendmicromenu.hide()
         self.ui_trendmicrotabla.pushButton_Fieldselector.clicked.connect(self.open_trendmicrofieldselector)
         self.ui_trendmicrotabla.pushButtonAplicar.clicked.connect(self.applyChanges_trendmicrotabla)
-        #self.ui_trendmicrotabla.pushButtonLimpiar.clicked.connect(self.ui_trendmicrotabla.updateTable(False))
+        self.ui_trendmicrotabla.pushButtonLimpiar.clicked.connect(lambda: self.ui_trendmicrotabla.updateTable(False,2))
         #self.ui_trendmicrotabla.pushButtonActualizar.clicked.connect(self.ui_trendmicrotabla.loadData)
         self.ui_trendmicrotabla.pushButtonAtras.clicked.connect(self.back_trendmicrotabla)
 
@@ -62,9 +62,14 @@ class Main(QtWidgets.QMainWindow):
         self.officetabla = QtWidgets.QMainWindow()
         self.ui_officetabla = OfficeTabla()
         self.ui_officetabla.setupUi(self.officetabla)
-        self.ui_officetabla.updateTable(False)
-        self.officetabla.show()
-        self.officemenu.hide()
+        try:
+            self.ui_officetabla.updateTable(False)
+            self.officetabla.show()
+            self.officemenu.hide()
+        except:
+            self.showDialog("Error", "No se han subido datos a la tabla")
+
+        
         self.ui_officetabla.pushButton_Fieldselector.clicked.connect(self.open_officefieldselector)
         self.ui_officetabla.pushButtonAplicar.clicked.connect(self.applyChanges_officetabla)
         #self.ui_officetabla.pushButtonActualizar.clicked.connect(self.ui_officetabla.loadData)
@@ -107,18 +112,30 @@ class Main(QtWidgets.QMainWindow):
         
 
     def apply_trendmicrofieldselector(self):
-        self.ui_trendmicrotabla.updateTable(self.ui_trendmicrofieldselector.setFields())
-        self.trendmicrofieldselector.hide()
+        fieldListNamesUsed = self.ui_trendmicrofieldselector.setFields()
+        #print(fieldListNamesUsed)
+        if fieldListNamesUsed != []:
+            self.ui_trendmicrotabla.updateTable(fieldListNamesUsed, 3)
+            self.trendmicrofieldselector.hide()
+        else:
+            self.showDialog("Error", "Elija al menos un campo")
+
+        
 
     def apply_officefieldselector(self):
-        self.ui_officetabla.updateTable(self.ui_officefieldselector.setFields())
-        self.officefieldselector.hide()
+        fieldListNamesUsed = self.ui_officefieldselector.setFields()
+        #print(fieldListNamesUsed)
+        if fieldListNamesUsed != []:
+            self.ui_officetabla.updateTable(fieldListNamesUsed)
+            self.officefieldselector.hide()
+        else:
+            self.showDialog("Error", "Elija al menos un campo")
 
     def applyChanges_trendmicrotabla(self):
         try:
-            self.ui_trendmicrotabla.updateTable(self.ui_trendmicrofieldselector.setFields())
+            self.ui_trendmicrotabla.updateTable(self.ui_trendmicrofieldselector.setFields(),4)
         except: 
-            self.ui_trendmicrotabla.updateTable(False)
+            self.ui_trendmicrotabla.updateTable(False,4)
 
     def applyChanges_officetabla(self):
         try:
@@ -127,11 +144,11 @@ class Main(QtWidgets.QMainWindow):
             self.ui_officetabla.updateTable(False)
 
     
-    def showDialog(self):
+    def showDialog(self, title, text):
         msgBox = QMessageBox()
         msgBox.setIcon(QMessageBox.Information)
-        msgBox.setText("Message box pop up window")
-        msgBox.setWindowTitle("QMessageBox Example")
+        msgBox.setWindowTitle(title)
+        msgBox.setText(text)
         msgBox.exec()
 
 
