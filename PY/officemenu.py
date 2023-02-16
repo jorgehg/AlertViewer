@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from officetabla import OfficeTabla
+from datetime import datetime
 import os, csv, database, win32com
 
 class OfficeMenu(object):
@@ -44,12 +45,9 @@ class OfficeMenu(object):
                     print(e)
 
                 for row in reader[1:]:
-                    rowString = str(row)
-                    rowString = rowString.replace("'", '')
-                    rowString = rowString.replace("[", '')
-                    input_list = rowString.split(",")
-                    db.execute("INSERT INTO alertasoffice (Fecha_Hora,Dia_Habil,Usuario,Email,Destinatario,BU,Pais,Politica,Regla,Accion,Producto,Severidad,Asunto,Filename,Extension,TipoDataConfidencial) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(input_list[0],input_list[1][1:],input_list[2][1:],input_list[3][1:],input_list[4][1:],input_list[5][1:],input_list[6][1:],input_list[7][1:],input_list[8][1:],input_list[9][1:],input_list[10][1:], input_list[11][1:],input_list[12][1:],input_list[13][1:],input_list[14][1:],input_list[15][1:]))
-                    #print(row)
+                    date = datetime.strptime(row[0], '%d-%m-%Y %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+                    db.execute("INSERT INTO alertasoffice (Fecha_Hora,Dia_Habil,Usuario,Email,Destinatario,BU,Pais,Politica,Regla,Accion,Producto,Severidad,Asunto,Filename,Extension,TipoDataConfidencial, Fuente) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(date,row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10], row[11],row[12],row[13],row[14],row[15],file_list[i]))
+                    print(row)
                     registerCount+=1
             #print(file_list[i])
             fileCount+=1

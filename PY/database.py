@@ -8,20 +8,28 @@ def createTableTrendmicro():
     db.execute("""CREATE TABLE IF NOT EXISTS "alertassoc" (
             "registro_id"	INTEGER,
             "Fecha_y_Hora" TEXT,
-            "user_ID"	TEXT,
-            "Endpoint"	TEXT,
             "BU"	TEXT,
+            "User_ID"	TEXT,
+            "Endpoint"	TEXT,
             "Politica"	TEXT,
             "Regla" TEXT,
-            "Canal_DLP"	TEXT,
-            "count"	INTEGER,
-            "severidad"	TEXT,
+            "Template"	TEXT,
+            "Severidad"	TEXT,
             "Accion_DLP"	TEXT,
-            "escalamiento"	TEXT,
-            "CC"	TEXT,
-            "argos_capa"	TEXT,
+            "Canal_DLP"	TEXT,
+            "Fileserver"	TEXT,
+            "File_Path"	TEXT,
+            "Filename"	TEXT,
+            "Extension" TEXT,
+            "Request" TEXT,
+            "Asunto" TEXT,
+            "Remitente" TEXT,
+            "Destinatario_Dominio" TEXT,
+            "Destinatario" TEXT,
+            "Fuente" TEXT,
             PRIMARY KEY("registro_id" AUTOINCREMENT)
         )""")
+
 
 def createTableOffice():
     db = connect()
@@ -43,5 +51,6 @@ def createTableOffice():
             "Filename" TEXT,
             "Extension" TEXT,
             "TipoDataConfidencial" TEXT,
+            "Fuente" TEXT,
             PRIMARY KEY("registro_id" AUTOINCREMENT)
         )""")

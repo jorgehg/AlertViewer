@@ -1,11 +1,60 @@
 from PyQt5 import QtCore, QtGui, QtQuickWidgets, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
-import os, re, win32com.client, database
+import os, re, win32com.client, database, csv
 
 
 class TrendmicroMenu(object):
     
     def loadFiles(self):
+        dialog = QMessageBox()
+        dialog.setWindowTitle("Importe de datos")
+        registerCount = 0
+        fileCount = 0
+        errorCount = 0
+        resultText = ''
+        file_list = []
+
+        db = database.connect()
+        database.createTableTrendmicro()
+
+        folder_path_emails = os.path.normpath(r"C:\Users\Jorge\Documents\AlertViewer\trendmicro")
+        outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
+        inbox = outlook.GetDefaultFolder(6)
+        messages = inbox.Items
+
+        for message in messages:
+                    if message.Subject.startswith('RV: Splunk Report: Reporte DLP Trend Micro - FIF CMR MX') and message.Unread == True:
+                        for attachment in message.Attachments: 
+                            if str(attachment.FileName).endswith(".csv"):
+                                try:
+                                    attachment.SaveASFile(os.path.join(folder_path_emails, attachment.FileName)) 
+                                    file_list.append(attachment.FileName)
+                                    print(attachment.FileName)
+                                    message.Unread = False
+                                except Exception as e:
+                                    print(e)
+
+        for i, _ in enumerate(file_list):
+                    with open(os.path.join(folder_path_emails,file_list[i]), 'r') as file:
+                        try:
+                            reader = list(csv.reader(file))
+                        except Exception as e: 
+                            errorCount+=1
+                            resultText = resultText + "\nArchivo: "+file_list[i]+" Error: "+str(e)
+                            print(e)
+
+                        for row in reader[1:]:
+                            db.execute("INSERT INTO alertassoc (Fecha_y_Hora,BU,User_ID,Endpoint,Politica,Regla,Template,Severidad,Accion_DLP,Canal_DLP,Fileserver,File_Path,Filename,Extension,Request,Asunto,Remitente,Destinatario_Dominio,Destinatario, Fuente) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10], row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18],file_list[i]))
+                            print(row)
+                            registerCount+=1
+                    #print(file_list[i])
+                    fileCount+=1
+
+        db.commit()
+        dialog.setText("Se han cargado con éxito "+str(fileCount)+" archivos con "+str(registerCount)+" registros con "+str(errorCount)+" error(es)."+resultText)
+        dialog.exec_()
+
+    def loadAlerts(self):
         dialog = QMessageBox()
         dialog.setWindowTitle("Importe de datos")
         

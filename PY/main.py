@@ -63,15 +63,14 @@ class Main(QtWidgets.QMainWindow):
         self.ui_officetabla = OfficeTabla()
         self.ui_officetabla.setupUi(self.officetabla)
         try:
-            self.ui_officetabla.updateTable(False)
+            self.ui_officetabla.updateTable(False,1)
             self.officetabla.show()
             self.officemenu.hide()
         except:
             self.showDialog("Error", "No se han subido datos a la tabla")
-
-        
         self.ui_officetabla.pushButton_Fieldselector.clicked.connect(self.open_officefieldselector)
         self.ui_officetabla.pushButtonAplicar.clicked.connect(self.applyChanges_officetabla)
+        self.ui_officetabla.pushButtonLimpiar.clicked.connect(lambda: self.ui_officetabla.updateTable(False,2))
         #self.ui_officetabla.pushButtonActualizar.clicked.connect(self.ui_officetabla.loadData)
         self.ui_officetabla.pushButtonAtras.clicked.connect(self.back_officetabla)
 
@@ -126,7 +125,7 @@ class Main(QtWidgets.QMainWindow):
         fieldListNamesUsed = self.ui_officefieldselector.setFields()
         #print(fieldListNamesUsed)
         if fieldListNamesUsed != []:
-            self.ui_officetabla.updateTable(fieldListNamesUsed)
+            self.ui_officetabla.updateTable(fieldListNamesUsed,3)
             self.officefieldselector.hide()
         else:
             self.showDialog("Error", "Elija al menos un campo")
@@ -139,9 +138,9 @@ class Main(QtWidgets.QMainWindow):
 
     def applyChanges_officetabla(self):
         try:
-            self.ui_officetabla.updateTable(self.ui_officefieldselector.setFields())
+            self.ui_officetabla.updateTable(self.ui_officefieldselector.setFields(),4)
         except: 
-            self.ui_officetabla.updateTable(False)
+            self.ui_officetabla.updateTable(False,4)
 
     
     def showDialog(self, title, text):

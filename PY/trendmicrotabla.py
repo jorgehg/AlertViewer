@@ -5,7 +5,7 @@ class TrendmicroTabla(object):
     
     def updateTable(self, fieldListNames,typeCall):
         if fieldListNames == False:
-            fieldListNames = ["registro_id", "Fecha_y_Hora", "user_ID", "Endpoint", "BU", "Politica", "Regla", "Canal_DLP", "count", "severidad", "Accion_DLP", "escalamiento", "CC", "argos_capa"]
+            fieldListNames = ["registro_id","Fecha_y_Hora","BU","User_ID","Endpoint","Politica","Regla","Template","Severidad","Accion_DLP","Canal_DLP","Fileserver","File_Path","Filename","Extension","Request","Asunto","Remitente","Destinatario_Dominio","Destinatario", "Fuente"]
         
         comboBoxContent = self.comboBoxBuscarCampo.currentText()
         #print(fieldListNames)
@@ -29,21 +29,28 @@ class TrendmicroTabla(object):
             sqlquery = sqlquery + " " + i + ","
 
         sqlquery = sqlquery[:-1]
+        temp_var = self.dateEditDesde.date() 
+        dateDesde = str(temp_var.toPyDate())
+        temp_var = self.dateEditHasta.date()
+        dateHasta = str(temp_var.toPyDate())
+
+        
 
         if typeCall == 4:
-            sqlquery  = "SELECT"+sqlquery+" FROM alertassoc WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"';" 
+            if self.lineEditBuscarCampo == '':
+                sqlquery  = "SELECT"+sqlquery+" FROM alertassoc WHERE Fecha_y_Hora > '"+dateDesde+"' AND Fecha_y_Hora < '"+dateHasta+"';" 
+            else:
+                sqlquery  = "SELECT"+sqlquery+" FROM alertassoc WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"' and Fecha_y_Hora > '"+dateDesde+"' AND Fecha_y_Hora < '"+dateHasta+"';" 
         else:
             sqlquery  = "SELECT"+sqlquery+" FROM alertassoc"
             
-
         db = database.connect()
         cur = db.cursor()
 
         tableRow = 0
-        self.tableWidget.setRowCount(2000)
+        self.tableWidget.setRowCount(20000)
         print(sqlquery)
         
-
         for row in cur.execute(sqlquery):
             counter = 0
             for i in row:
@@ -67,20 +74,10 @@ class TrendmicroTabla(object):
         self.tableWidget = QtWidgets.QTableWidget(self.widget)
         self.tableWidget.setGeometry(QtCore.QRect(20, 170, 1321, 541))
         self.tableWidget.setObjectName("tableWidget")     
-        self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.widget)
-        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(1059, 10, 271, 81))
-        self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_2)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.pushButtonActualizar = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
-        self.pushButtonActualizar.setStyleSheet("background-color: rgb(255, 135, 135);")
-        self.pushButtonActualizar.setObjectName("pushButtonActualizar")
-        self.horizontalLayout_2.addWidget(self.pushButtonActualizar)
-        self.pushButtonAtras = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
+        self.pushButtonAtras = QtWidgets.QPushButton(self.widget)
+        self.pushButtonAtras.setGeometry(QtCore.QRect(1200, 10, 120, 30))
         self.pushButtonAtras.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonAtras.setObjectName("pushButtonAtras")
-        self.horizontalLayout_2.addWidget(self.pushButtonAtras)
         self.horizontalLayoutWidget_3 = QtWidgets.QWidget(self.widget)
         self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(40, 90, 801, 71))
         self.horizontalLayoutWidget_3.setObjectName("horizontalLayoutWidget_3")
@@ -121,7 +118,6 @@ class TrendmicroTabla(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Trendmicro - Tabla")) 
-        self.pushButtonActualizar.setText(_translate("MainWindow", "Actualizar"))
         self.pushButtonAtras.setText(_translate("MainWindow", "Atrás"))
         self.pushButton_Fieldselector.setText(_translate("MainWindow", "Seleccionar campos"))
         self.pushButtonAplicar.setText(_translate("MainWindow", "Aplicar"))

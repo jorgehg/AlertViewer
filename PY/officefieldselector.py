@@ -5,8 +5,8 @@ class OfficeFieldSelector(object):
     """
     """
 
-    fieldListNames = ["registro_id","Fecha_Hora","Dia_Habil","Usuario","Email","Destinatario","BU","Pais","Politica","Regla","Accion","Producto","Severidad","Asunto","Filename","Extension","TipoDataConfidencial"]
-    fieldListStatus = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    fieldListNames = ["registro_id","Fecha_Hora","Dia_Habil","Usuario","Email","Destinatario","BU","Pais","Politica","Regla","Accion","Producto","Severidad","Asunto","Filename","Extension","TipoDataConfidencial", "Fuente"]
+    fieldListStatus = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     switcher = False
 
     def setFields(self):
@@ -27,6 +27,7 @@ class OfficeFieldSelector(object):
         self.fieldListStatus[14] = 1 if self.checkBox_Filename.isChecked() else 0
         self.fieldListStatus[15] = 1 if self.checkBox_Extension.isChecked() else 0
         self.fieldListStatus[16] = 1 if self.checkBox_TipoDataConfidencial.isChecked() else 0
+        self.fieldListStatus[17] = 1 if self.checkBox_Fuente.isChecked() else 0
 
         counter = 0
         fieldListNamesUsed = []
@@ -55,6 +56,7 @@ class OfficeFieldSelector(object):
         self.checkBox_Filename.setChecked(True) if self.fieldListStatus[14] == 1 else self.checkBox_Filename.setChecked(False)
         self.checkBox_Extension.setChecked(True) if self.fieldListStatus[15] == 1 else self.checkBox_Extension.setChecked(False)
         self.checkBox_TipoDataConfidencial.setChecked(True) if self.fieldListStatus[16] == 1 else self.checkBox_TipoDataConfidencial.setChecked(False)
+        self.checkBox_Fuente.setChecked(True) if self.fieldListStatus[16] == 1 else self.checkBox_Fuente.setChecked(False)
         
     def switcher(self):
         self.switcher = not bool(self.switcher)
@@ -75,7 +77,7 @@ class OfficeFieldSelector(object):
         self.checkBox_Filename.setChecked(self.switcher)  
         self.checkBox_Extension.setChecked(self.switcher)  
         self.checkBox_TipoDataConfidencial.setChecked(self.switcher)  
-        
+        self.checkBox_Fuente.setChecked(self.switcher)  
         
         self.centralwidget.update()
 
@@ -91,54 +93,48 @@ class OfficeFieldSelector(object):
         self.gridLayout.setContentsMargins(50, 0, 50, 0)
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName("gridLayout")
-        self.checkBox_Pais = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Pais.setObjectName("checkBox_Pais")
-        self.gridLayout.addWidget(self.checkBox_Pais, 2, 1, 1, 1)
-        self.checkBox_Email = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Email.setObjectName("checkBox_Email")
-        self.gridLayout.addWidget(self.checkBox_Email, 1, 1, 1, 1)
-        self.checkBox_BU = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_BU.setObjectName("checkBox_BU")
-        self.gridLayout.addWidget(self.checkBox_BU, 2, 0, 1, 1)
-        self.checkBox_Fecha_Hora = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Fecha_Hora.setObjectName("checkBox_Fecha_Hora")
-        self.gridLayout.addWidget(self.checkBox_Fecha_Hora, 0, 1, 1, 1)
-        self.checkBox_Regla = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Regla.setObjectName("checkBox_Regla")
-        self.gridLayout.addWidget(self.checkBox_Regla, 3, 0, 1, 1)
-        self.checkBox_Politica = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Politica.setObjectName("checkBox_Politica")
-        self.gridLayout.addWidget(self.checkBox_Politica, 2, 2, 1, 1)
-        self.checkBox_Producto = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Producto.setObjectName("checkBox_Producto")
-        self.gridLayout.addWidget(self.checkBox_Producto, 3, 2, 1, 1)
-        self.checkBox_Dia_Habil = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Dia_Habil.setObjectName("checkBox_Dia_Habil")
-        self.gridLayout.addWidget(self.checkBox_Dia_Habil, 0, 2, 1, 1)
-        self.checkBox_Accion = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Accion.setObjectName("checkBox_Accion")
-        self.gridLayout.addWidget(self.checkBox_Accion, 3, 1, 1, 1)
-        self.checkBox_Destinatario = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Destinatario.setObjectName("checkBox_Destinatario")
-        self.gridLayout.addWidget(self.checkBox_Destinatario, 1, 2, 1, 1)
         self.checkBox_IDRegistro = QtWidgets.QCheckBox(self.gridLayoutWidget)
         self.checkBox_IDRegistro.setObjectName("checkBox_IDRegistro")
         self.gridLayout.addWidget(self.checkBox_IDRegistro, 0, 0, 1, 1)
-        self.pushButtonAplicar = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.pushButtonAplicar.setObjectName("pushButtonAplicar")
-        self.gridLayout.addWidget(self.pushButtonAplicar, 6, 2, 1, 1)
-        self.pushButtonSwitch = QtWidgets.QPushButton(self.gridLayoutWidget)
-        self.pushButtonSwitch.setObjectName("pushButtonSwitch")
-        self.gridLayout.addWidget(self.pushButtonSwitch, 6, 0, 1, 1)
-        self.checkBox_Asunto = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Asunto.setObjectName("checkBox_Asunto")
-        self.gridLayout.addWidget(self.checkBox_Asunto, 4, 1, 1, 1)
+        self.checkBox_Fecha_Hora = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Fecha_Hora.setObjectName("checkBox_Fecha_Hora")
+        self.gridLayout.addWidget(self.checkBox_Fecha_Hora, 0, 1, 1, 1)
+        self.checkBox_Dia_Habil = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Dia_Habil.setObjectName("checkBox_Dia_Habil")
+        self.gridLayout.addWidget(self.checkBox_Dia_Habil, 0, 2, 1, 1)
+        self.checkBox_Usuario = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Usuario.setObjectName("checkBox_Usuario")
+        self.gridLayout.addWidget(self.checkBox_Usuario, 1, 0, 1, 1)        
+        self.checkBox_Email = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Email.setObjectName("checkBox_Email")
+        self.gridLayout.addWidget(self.checkBox_Email, 1, 1, 1, 1)
+        self.checkBox_Destinatario = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Destinatario.setObjectName("checkBox_Destinatario")
+        self.gridLayout.addWidget(self.checkBox_Destinatario, 1, 2, 1, 1)
+        self.checkBox_BU = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_BU.setObjectName("checkBox_BU")
+        self.gridLayout.addWidget(self.checkBox_BU, 2, 0, 1, 1)
+        self.checkBox_Pais = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Pais.setObjectName("checkBox_Pais")
+        self.gridLayout.addWidget(self.checkBox_Pais, 2, 1, 1, 1) 
+        self.checkBox_Politica = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Politica.setObjectName("checkBox_Politica")
+        self.gridLayout.addWidget(self.checkBox_Politica, 2, 2, 1, 1)
+        self.checkBox_Regla = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Regla.setObjectName("checkBox_Regla")
+        self.gridLayout.addWidget(self.checkBox_Regla, 3, 0, 1, 1)
+        self.checkBox_Accion = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Accion.setObjectName("checkBox_Accion")
+        self.gridLayout.addWidget(self.checkBox_Accion, 3, 1, 1, 1)
+        self.checkBox_Producto = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Producto.setObjectName("checkBox_Producto")
+        self.gridLayout.addWidget(self.checkBox_Producto, 3, 2, 1, 1)      
         self.checkBox_Severidad = QtWidgets.QCheckBox(self.gridLayoutWidget)
         self.checkBox_Severidad.setObjectName("checkBox_Severidad")
         self.gridLayout.addWidget(self.checkBox_Severidad, 4, 0, 1, 1)
-        self.checkBox_Usuario = QtWidgets.QCheckBox(self.gridLayoutWidget)
-        self.checkBox_Usuario.setObjectName("checkBox_Usuario")
-        self.gridLayout.addWidget(self.checkBox_Usuario, 1, 0, 1, 1)
+        self.checkBox_Asunto = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Asunto.setObjectName("checkBox_Asunto")
+        self.gridLayout.addWidget(self.checkBox_Asunto, 4, 1, 1, 1)
         self.checkBox_Filename = QtWidgets.QCheckBox(self.gridLayoutWidget)
         self.checkBox_Filename.setObjectName("checkBox_Filename")
         self.gridLayout.addWidget(self.checkBox_Filename, 4, 2, 1, 1)
@@ -148,6 +144,15 @@ class OfficeFieldSelector(object):
         self.checkBox_TipoDataConfidencial = QtWidgets.QCheckBox(self.gridLayoutWidget)
         self.checkBox_TipoDataConfidencial.setObjectName("checkBox_TipoDataConfidencial")
         self.gridLayout.addWidget(self.checkBox_TipoDataConfidencial, 5, 1, 1, 1)
+        self.checkBox_Fuente = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_Fuente.setObjectName("checkBox_TipoDataConfidencial")
+        self.gridLayout.addWidget(self.checkBox_Fuente, 5, 2, 1, 1)
+        self.pushButtonSwitch = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButtonSwitch.setObjectName("pushButtonSwitch")
+        self.gridLayout.addWidget(self.pushButtonSwitch, 6, 0, 1, 1)
+        self.pushButtonAplicar = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButtonAplicar.setObjectName("pushButtonAplicar")
+        self.gridLayout.addWidget(self.pushButtonAplicar, 6, 2, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.setCheckboxes()
@@ -176,6 +181,7 @@ class OfficeFieldSelector(object):
         self.checkBox_Usuario.setText(_translate("MainWindow", "Usuario"))
         self.checkBox_Filename.setText(_translate("MainWindow", "Filename"))
         self.checkBox_Extension.setText(_translate("MainWindow", "Extension"))
+        self.checkBox_Fuente.setText(_translate("MainWindow", "Fuente"))
         self.checkBox_TipoDataConfidencial.setText(_translate("MainWindow", "TipoDataConfid"))
 
 if __name__ == "__main__":

@@ -24,6 +24,7 @@ db.execute("""CREATE TABLE IF NOT EXISTS "alertassoc" (
             "Remitente" TEXT,
             "Destinatario_Dominio" TEXT,
             "Destinatario" TEXT,
+            "Fuente" TEXT,
             PRIMARY KEY("registro_id" AUTOINCREMENT)
         )""")
 
@@ -60,12 +61,9 @@ for i, _ in enumerate(file_list):
                     print(e)
 
                 for row in reader[1:]:
-                    rowString = str(row)
-                    rowString = rowString.replace("'", '')
-                    rowString = rowString.replace("[", '')
-                    input_list = rowString.split(",")
-                    db.execute("INSERT INTO alertassoc (Fecha_y_Hora,BU,User_ID,Endpoint,Politica,Regla,Template,Severidad,Accion_DLP,Canal_DLP,Fileserver,File_Path,Filename,Extension,Request,Asunto,Remitente,Destinatario_Dominio,Destinatario) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(input_list[0],input_list[1],input_list[2],input_list[3],input_list[4],input_list[5],input_list[6],input_list[7],input_list[8],input_list[9],input_list[10], input_list[11],input_list[12],input_list[13],input_list[14],input_list[15],input_list[16],input_list[17],input_list[18]))
-                    #print(row)
+                    
+                    db.execute("INSERT INTO alertassoc (Fecha_y_Hora,BU,User_ID,Endpoint,Politica,Regla,Template,Severidad,Accion_DLP,Canal_DLP,Fileserver,File_Path,Filename,Extension,Request,Asunto,Remitente,Destinatario_Dominio,Destinatario, Fuente) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10], row[11],row[12],row[13],row[14],row[15],row[16],row[17],row[18],file_list[i]))
+                    print(row)
                     registerCount+=1
             #print(file_list[i])
             fileCount+=1

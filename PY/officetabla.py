@@ -1,15 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import database
 
-
 class OfficeTabla(object):
 
-    def updateTable(self,fieldListNames):
+    def updateTable(self,fieldListNames,typeCall):
         if fieldListNames == False:
-            fieldListNames = ["registro_id","Fecha_Hora","Dia_Habil","Usuario","Email","Destinatario","BU","Pais","Politica","Regla","Accion","Producto","Severidad","Asunto","Filename","Extension","TipoDataConfidencial"]
+            fieldListNames = ["registro_id","Fecha_Hora","Dia_Habil","Usuario","Email","Destinatario","BU","Pais","Politica","Regla","Accion","Producto","Severidad","Asunto","Filename","Extension","TipoDataConfidencial", "Fuente"]
 
         comboBoxContent = self.comboBoxBuscarCampo.currentText() 
-        print(fieldListNames)
+        #print(fieldListNames)
         self.tableWidget.setColumnCount(len(fieldListNames))
 
         counter = 0
@@ -31,11 +30,12 @@ class OfficeTabla(object):
 
         sqlquery = sqlquery[:-1]
 
-        if self.lineEditBuscarCampo.text() == '':
-            sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice"
-        else:
+        if typeCall == 4:
             sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"';" 
-        
+        else:
+            sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice"
+        if typeCall == 2:
+            self.lineEditBuscarCampo.clear()
         
         db = database.connect()
         cur = db.cursor()
@@ -50,7 +50,7 @@ class OfficeTabla(object):
                 self.tableWidget.setItem(tableRow, counter, QtWidgets.QTableWidgetItem(str(i)))
                 counter +=1
             tableRow+=1
-            print(row)
+            #print(row)
         self.tableWidget.setRowCount(tableRow)
 
         self.centralwidget.update()
