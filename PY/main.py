@@ -49,13 +49,16 @@ class Main(QtWidgets.QMainWindow):
         self.trendmicrotabla = QtWidgets.QMainWindow()
         self.ui_trendmicrotabla = TrendmicroTabla()
         self.ui_trendmicrotabla.setupUi(self.trendmicrotabla)
-        self.ui_trendmicrotabla.updateTable(False,1)
-        self.trendmicrotabla.show()
-        self.trendmicromenu.hide()
+        try:
+            self.ui_trendmicrotabla.updateTable(False,1)
+            self.trendmicrotabla.show()
+            self.trendmicromenu.hide()
+        except Exception as e:
+            self.showDialog("Error", "No se han subido datos a la tabla"+str(e))
         self.ui_trendmicrotabla.pushButton_Fieldselector.clicked.connect(self.open_trendmicrofieldselector)
         self.ui_trendmicrotabla.pushButtonAplicar.clicked.connect(self.applyChanges_trendmicrotabla)
         self.ui_trendmicrotabla.pushButtonLimpiar.clicked.connect(lambda: self.ui_trendmicrotabla.updateTable(False,2))
-        #self.ui_trendmicrotabla.pushButtonActualizar.clicked.connect(self.ui_trendmicrotabla.loadData)
+        self.ui_trendmicrotabla.pushButtonExportar.clicked.connect(lambda: self.ui_trendmicrotabla.exportTable(r"C:\Users\ext_johirayg\Documents\AlertViewer\export\prueba.csv"))
         self.ui_trendmicrotabla.pushButtonAtras.clicked.connect(self.back_trendmicrotabla)
 
     def open_officetabla(self):
@@ -66,8 +69,8 @@ class Main(QtWidgets.QMainWindow):
             self.ui_officetabla.updateTable(False,1)
             self.officetabla.show()
             self.officemenu.hide()
-        except:
-            self.showDialog("Error", "No se han subido datos a la tabla")
+        except Exception as e:
+            self.showDialog("Error", "No se han subido datos a la tabla"+str(e))
         self.ui_officetabla.pushButton_Fieldselector.clicked.connect(self.open_officefieldselector)
         self.ui_officetabla.pushButtonAplicar.clicked.connect(self.applyChanges_officetabla)
         self.ui_officetabla.pushButtonLimpiar.clicked.connect(lambda: self.ui_officetabla.updateTable(False,2))

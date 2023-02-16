@@ -1,7 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from datetime import datetime,date
 import database
 
 class OfficeTabla(object):
+    comboBoxContent = ""
 
     def updateTable(self,fieldListNames,typeCall):
         if fieldListNames == False:
@@ -13,8 +15,11 @@ class OfficeTabla(object):
 
         counter = 0
         _translate = QtCore.QCoreApplication.translate
-        
+
+        db = database.connect()
+        cur = db.cursor()
         sqlquery = ""
+
         header = self.tableWidget.horizontalHeader()
         self.comboBoxBuscarCampo.clear()
 
@@ -28,17 +33,29 @@ class OfficeTabla(object):
             counter+=1
             sqlquery = sqlquery + " " + i + ","
 
+        self.comboBoxBuscarCampo.setCurrentText(comboBoxContent)
         sqlquery = sqlquery[:-1]
-
-        if typeCall == 4:
-            sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"';" 
-        else:
-            sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice"
-        if typeCall == 2:
+        if typeCall == 1 or typeCall == 2:
+            dateDesde = str(cur.execute("SELECT MIN(Fecha_y_Hora) FROM alertassoc").fetchone()[0])
+            print(dateDesde)
+            dateDesde = datetime.strptime(dateDesde, '%Y-%m-%d %H:%M:%S')
+            self.dateEditDesde.setDate(dateDesde)
+            print(list)
+            dateHasta = date.today()
+            self.dateEditHasta.setDate(dateHasta)
             self.lineEditBuscarCampo.clear()
+
+        dateDesde = self.dateEditDesde.date() 
+        dateDesde = str(dateDesde.toPyDate())
+        dateHasta = self.dateEditHasta.date().addDays(1)
+        dateHasta = str(dateHasta.toPyDate())
+
         
-        db = database.connect()
-        cur = db.cursor()
+
+        if self.lineEditBuscarCampo.text() == '':
+            sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice WHERE Fecha_Hora > '"+dateDesde+"' AND Fecha_Hora < '"+dateHasta+"';" 
+        else:
+            sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"' and Fecha_Hora > '"+dateDesde+"' AND Fecha_Hora < '"+dateHasta+"';" 
 
         tableRow = 0
         self.tableWidget.setRowCount(10000)
@@ -67,50 +84,10 @@ class OfficeTabla(object):
         self.tableWidget = QtWidgets.QTableWidget(self.widget)
         self.tableWidget.setGeometry(QtCore.QRect(20, 170, 1321, 541))
         self.tableWidget.setObjectName("tableWidget")
-        self.tableWidget.setColumnCount(14)
-        self.tableWidget.setRowCount(0)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(5, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(6, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(7, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(8, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(9, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(10, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(11, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(12, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(13, item)
-        self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.widget)
-        self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(1059, 10, 271, 81))
-        self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_2)
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.pushButtonActualizar = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
-        self.pushButtonActualizar.setStyleSheet("background-color: rgb(255, 135, 135);")
-        self.pushButtonActualizar.setObjectName("pushButtonActualizar")
-        self.horizontalLayout_2.addWidget(self.pushButtonActualizar)
-        self.pushButtonAtras = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
+        self.pushButtonAtras = QtWidgets.QPushButton(self.widget)
+        self.pushButtonAtras.setGeometry(QtCore.QRect(1200, 15, 120, 25))
         self.pushButtonAtras.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonAtras.setObjectName("pushButtonAtras")
-        self.horizontalLayout_2.addWidget(self.pushButtonAtras)
         self.horizontalLayoutWidget_3 = QtWidgets.QWidget(self.widget)
         self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(40, 90, 801, 71))
         self.horizontalLayoutWidget_3.setObjectName("horizontalLayoutWidget_3")
@@ -123,9 +100,11 @@ class OfficeTabla(object):
         self.horizontalLayout_3.addWidget(self.pushButton_Fieldselector)
         self.dateEditDesde = QtWidgets.QDateEdit(self.horizontalLayoutWidget_3)
         self.dateEditDesde.setObjectName("dateEditDesde")
+        self.dateEditDesde.setDisplayFormat("dd-MM-yyyy")
         self.horizontalLayout_3.addWidget(self.dateEditDesde)
         self.dateEditHasta = QtWidgets.QDateEdit(self.horizontalLayoutWidget_3)
         self.dateEditHasta.setObjectName("dateEditHasta")
+        self.dateEditHasta.setDisplayFormat("dd-MM-yyyy")
         self.horizontalLayout_3.addWidget(self.dateEditHasta)
         self.comboBoxBuscarCampo = QtWidgets.QComboBox(self.horizontalLayoutWidget_3)
         self.comboBoxBuscarCampo.setObjectName("comboBoxBuscarCampo")
@@ -151,7 +130,6 @@ class OfficeTabla(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Office - Tabla"))
-        self.pushButtonActualizar.setText(_translate("MainWindow", "Actualizar"))
         self.pushButtonAtras.setText(_translate("MainWindow", "Atrás"))
         self.pushButton_Fieldselector.setText(_translate("MainWindow", "Seleccionar campos"))
         self.pushButtonAplicar.setText(_translate("MainWindow", "Aplicar"))

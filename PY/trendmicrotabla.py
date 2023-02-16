@@ -1,20 +1,25 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import database
+from PyQt5.QtCore import QDate
+from datetime import date,datetime
+import database, csv
 
 class TrendmicroTabla(object):
+    comboBoxContent = ""
     
     def updateTable(self, fieldListNames,typeCall):
         if fieldListNames == False:
             fieldListNames = ["registro_id","Fecha_y_Hora","BU","User_ID","Endpoint","Politica","Regla","Template","Severidad","Accion_DLP","Canal_DLP","Fileserver","File_Path","Filename","Extension","Request","Asunto","Remitente","Destinatario_Dominio","Destinatario", "Fuente"]
         
         comboBoxContent = self.comboBoxBuscarCampo.currentText()
-        #print(fieldListNames)
         self.tableWidget.setColumnCount(len(fieldListNames))
 
         counter = 0
         _translate = QtCore.QCoreApplication.translate
         
+        db = database.connect()
+        cur = db.cursor()
         sqlquery = ""
+        
         header = self.tableWidget.horizontalHeader()
         self.comboBoxBuscarCampo.clear()
 
@@ -28,24 +33,28 @@ class TrendmicroTabla(object):
             counter+=1
             sqlquery = sqlquery + " " + i + ","
 
+        self.comboBoxBuscarCampo.setCurrentText(comboBoxContent)
         sqlquery = sqlquery[:-1]
-        temp_var = self.dateEditDesde.date() 
-        dateDesde = str(temp_var.toPyDate())
-        temp_var = self.dateEditHasta.date()
-        dateHasta = str(temp_var.toPyDate())
 
-        
+        if typeCall == 1 or typeCall == 2:
+            dateDesde = str(cur.execute("SELECT MIN(Fecha_y_Hora) FROM alertassoc").fetchone()[0])
+            print(dateDesde)
+            dateDesde = datetime.strptime(dateDesde, '%Y-%m-%d %H:%M:%S')
+            self.dateEditDesde.setDate(dateDesde)
+            print(list)
+            dateHasta = date.today()
+            self.dateEditHasta.setDate(dateHasta)
+            self.lineEditBuscarCampo.clear()
 
-        if typeCall == 4:
-            if self.lineEditBuscarCampo == '':
-                sqlquery  = "SELECT"+sqlquery+" FROM alertassoc WHERE Fecha_y_Hora > '"+dateDesde+"' AND Fecha_y_Hora < '"+dateHasta+"';" 
-            else:
-                sqlquery  = "SELECT"+sqlquery+" FROM alertassoc WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"' and Fecha_y_Hora > '"+dateDesde+"' AND Fecha_y_Hora < '"+dateHasta+"';" 
+        dateDesde = self.dateEditDesde.date() 
+        dateDesde = str(dateDesde.toPyDate())
+        dateHasta = self.dateEditHasta.date().addDays(1)
+        dateHasta = str(dateHasta.toPyDate())
+
+        if self.lineEditBuscarCampo.text() == '':
+            sqlquery  = "SELECT"+sqlquery+" FROM alertassoc WHERE Fecha_y_Hora > '"+dateDesde+"' AND Fecha_y_Hora < '"+dateHasta+"';" 
         else:
-            sqlquery  = "SELECT"+sqlquery+" FROM alertassoc"
-            
-        db = database.connect()
-        cur = db.cursor()
+            sqlquery  = "SELECT"+sqlquery+" FROM alertassoc WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"' and Fecha_y_Hora > '"+dateDesde+"' AND Fecha_y_Hora < '"+dateHasta+"';" 
 
         tableRow = 0
         self.tableWidget.setRowCount(20000)
@@ -61,6 +70,18 @@ class TrendmicroTabla(object):
         self.tableWidget.setRowCount(tableRow)
 
         self.centralwidget.update()
+
+    def exportTable(self,directory):
+        columns = range(self.tableWidget.columnCount())
+        header = [self.tableWidget.horizontalHeaderItem(column).text() for column in columns]
+        with open(directory,'w',encoding='UTF8') as file:
+            writer = csv.writer(file)
+            writer.writerow(header)
+            for row in range(self.tableWidget.rowCount()):
+                writer.writerow(self.tableWidget.item(row,column).text() for column in columns)
+
+        
+        
                 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -75,11 +96,11 @@ class TrendmicroTabla(object):
         self.tableWidget.setGeometry(QtCore.QRect(20, 170, 1321, 541))
         self.tableWidget.setObjectName("tableWidget")     
         self.pushButtonAtras = QtWidgets.QPushButton(self.widget)
-        self.pushButtonAtras.setGeometry(QtCore.QRect(1200, 10, 120, 30))
+        self.pushButtonAtras.setGeometry(QtCore.QRect(1200, 15, 120, 25))
         self.pushButtonAtras.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonAtras.setObjectName("pushButtonAtras")
         self.horizontalLayoutWidget_3 = QtWidgets.QWidget(self.widget)
-        self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(40, 90, 801, 71))
+        self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(40, 90, 800, 71))
         self.horizontalLayoutWidget_3.setObjectName("horizontalLayoutWidget_3")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_3)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -90,9 +111,11 @@ class TrendmicroTabla(object):
         self.horizontalLayout_3.addWidget(self.pushButton_Fieldselector)
         self.dateEditDesde = QtWidgets.QDateEdit(self.horizontalLayoutWidget_3)
         self.dateEditDesde.setObjectName("dateEditDesde")
+        self.dateEditDesde.setDisplayFormat("dd-MM-yyyy")
         self.horizontalLayout_3.addWidget(self.dateEditDesde)
         self.dateEditHasta = QtWidgets.QDateEdit(self.horizontalLayoutWidget_3)
         self.dateEditHasta.setObjectName("dateEditHasta")
+        self.dateEditHasta.setDisplayFormat("dd-MM-yyyy")
         self.horizontalLayout_3.addWidget(self.dateEditHasta)
         self.comboBoxBuscarCampo = QtWidgets.QComboBox(self.horizontalLayoutWidget_3)
         self.comboBoxBuscarCampo.setObjectName("comboBoxBuscarCampo")
@@ -109,6 +132,10 @@ class TrendmicroTabla(object):
         self.pushButtonLimpiar.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonLimpiar.setObjectName("pushButtonLimpiar")
         self.horizontalLayout_3.addWidget(self.pushButtonLimpiar)
+        self.pushButtonExportar = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
+        self.pushButtonExportar.setStyleSheet("background-color: rgb(255, 135, 135);")
+        self.pushButtonExportar.setObjectName("pushButtonLimpiar")
+        self.horizontalLayout_3.addWidget(self.pushButtonExportar)
         MainWindow.setCentralWidget(self.centralwidget)
 
         
@@ -122,6 +149,7 @@ class TrendmicroTabla(object):
         self.pushButton_Fieldselector.setText(_translate("MainWindow", "Seleccionar campos"))
         self.pushButtonAplicar.setText(_translate("MainWindow", "Aplicar"))
         self.pushButtonLimpiar.setText(_translate("MainWindow", "Limpiar"))
+        self.pushButtonExportar.setText(_translate("MainWindow", "Exportar"))
         
 
 if __name__ == "__main__":

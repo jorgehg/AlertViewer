@@ -1,6 +1,6 @@
-from datetime import datetime
+import os
+a = 'office'
+b = 'Reporte_DLP_Office_365_-_FIF_CMR_MX-2022-11-21.csv'
 
-d = "09-02-2023 14:34:47"
-
-c = datetime.strptime(d, '%d-%m-%Y %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+c = os.path.join(os.getcwd(),a, b)
 print(c)

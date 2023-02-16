@@ -15,7 +15,9 @@ class OfficeMenu(object):
         file_list = []
         dialog.setWindowTitle("Importe de datos")
         dialog.setIcon(QMessageBox.Information)
-        folder_path_emails = os.path.normpath(r"C:\Users\Jorge\Documents\AlertViewer\office")
+        folder_path_emails = os.path.join(os.getcwd(), 'office')
+        if not os.path.exists(folder_path_emails):
+            os.mkdir(folder_path_emails)
         outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
         inbox = outlook.GetDefaultFolder(6)
         messages = inbox.Items
@@ -27,30 +29,29 @@ class OfficeMenu(object):
                 for attachment in message.Attachments: 
                     if str(attachment.FileName).endswith(".csv"):
                         try:
+                            print(attachment.FileName)
                             attachment.SaveASFile(os.path.join(folder_path_emails, attachment.FileName)) 
                             file_list.append(attachment.FileName)
-                            print(attachment.FileName)
                             message.Unread = False
                         except Exception as e:
                             print(e)
 
         
         for i, _ in enumerate(file_list):
-            with open(os.path.join(folder_path_emails,file_list[i]), 'r') as file:
+            with open(os.path.join(folder_path_emails,file_list[i]), encoding="utf8") as file:
                 try:
                     reader = list(csv.reader(file))
+                    for row in reader[1:]:
+                        date = datetime.strptime(row[0], '%d-%m-%Y %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
+                        db.execute("INSERT INTO alertasoffice (Fecha_Hora,Dia_Habil,Usuario,Email,Destinatario,BU,Pais,Politica,Regla,Accion,Producto,Severidad,Asunto,Filename,Extension,TipoDataConfidencial, Fuente) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(date,row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10], row[11],row[12],row[13],row[14],row[15],file_list[i]))
+                        #print(row)
+                        registerCount+=1
+                    fileCount+=1
                 except Exception as e: 
                     errorCount+=1
                     resultText = resultText + "\nArchivo: "+file_list[i]+" Error: "+str(e)
                     print(e)
-
-                for row in reader[1:]:
-                    date = datetime.strptime(row[0], '%d-%m-%Y %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S')
-                    db.execute("INSERT INTO alertasoffice (Fecha_Hora,Dia_Habil,Usuario,Email,Destinatario,BU,Pais,Politica,Regla,Accion,Producto,Severidad,Asunto,Filename,Extension,TipoDataConfidencial, Fuente) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",(date,row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10], row[11],row[12],row[13],row[14],row[15],file_list[i]))
-                    print(row)
-                    registerCount+=1
             #print(file_list[i])
-            fileCount+=1
         
         db.commit()
         dialog.setText("Se han cargado con éxito "+str(fileCount)+" archivos con "+str(registerCount)+" registros con "+str(errorCount)+" error(es)."+resultText)
