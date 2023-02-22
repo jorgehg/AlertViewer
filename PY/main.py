@@ -1,5 +1,4 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMessageBox
 from bifurc import Bifurc
 from trendmicromenu import TrendmicroMenu
 from officemenu import OfficeMenu
@@ -54,11 +53,11 @@ class Main(QtWidgets.QMainWindow):
             self.trendmicrotabla.show()
             self.trendmicromenu.hide()
         except Exception as e:
-            self.showDialog("Error", "No se han subido datos a la tabla"+str(e))
+            self.showDialog("Error", "No se han subido datos a la tabla.\n"+str(e))
         self.ui_trendmicrotabla.pushButton_Fieldselector.clicked.connect(self.open_trendmicrofieldselector)
         self.ui_trendmicrotabla.pushButtonAplicar.clicked.connect(self.applyChanges_trendmicrotabla)
         self.ui_trendmicrotabla.pushButtonLimpiar.clicked.connect(lambda: self.ui_trendmicrotabla.updateTable(False,2))
-        self.ui_trendmicrotabla.pushButtonExportar.clicked.connect(lambda: self.ui_trendmicrotabla.exportTable(r"C:\Users\ext_johirayg\Documents\AlertViewer\export\prueba.csv"))
+        self.ui_trendmicrotabla.pushButtonExportar.clicked.connect(lambda: self.ui_trendmicrotabla.exportTable(QtWidgets.QFileDialog.getSaveFileName(self,'Open File','','CSV (*.csv)')[0]))
         self.ui_trendmicrotabla.pushButtonAtras.clicked.connect(self.back_trendmicrotabla)
 
     def open_officetabla(self):
@@ -70,11 +69,11 @@ class Main(QtWidgets.QMainWindow):
             self.officetabla.show()
             self.officemenu.hide()
         except Exception as e:
-            self.showDialog("Error", "No se han subido datos a la tabla"+str(e))
+            self.showDialog("Error", "No se han subido datos a la tabla.\n"+str(e))
         self.ui_officetabla.pushButton_Fieldselector.clicked.connect(self.open_officefieldselector)
         self.ui_officetabla.pushButtonAplicar.clicked.connect(self.applyChanges_officetabla)
         self.ui_officetabla.pushButtonLimpiar.clicked.connect(lambda: self.ui_officetabla.updateTable(False,2))
-        #self.ui_officetabla.pushButtonActualizar.clicked.connect(self.ui_officetabla.loadData)
+        self.ui_officetabla.pushButtonExportar.clicked.connect(lambda: self.ui_officetabla.exportTable(QtWidgets.QFileDialog.getSaveFileName(self,'Open File')[0]))
         self.ui_officetabla.pushButtonAtras.clicked.connect(self.back_officetabla)
 
     def open_trendmicrofieldselector(self):
@@ -123,7 +122,6 @@ class Main(QtWidgets.QMainWindow):
             self.showDialog("Error", "Elija al menos un campo")
 
         
-
     def apply_officefieldselector(self):
         fieldListNamesUsed = self.ui_officefieldselector.setFields()
         #print(fieldListNamesUsed)
@@ -147,8 +145,8 @@ class Main(QtWidgets.QMainWindow):
 
     
     def showDialog(self, title, text):
-        msgBox = QMessageBox()
-        msgBox.setIcon(QMessageBox.Information)
+        msgBox = QtWidgets.QMessageBox()
+        msgBox.setIcon(QtWidgets.QMessageBox.Information)
         msgBox.setWindowTitle(title)
         msgBox.setText(text)
         msgBox.exec()

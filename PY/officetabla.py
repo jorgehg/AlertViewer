@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from datetime import datetime,date
-import database
+import database, csv
 
 class OfficeTabla(object):
     comboBoxContent = ""
@@ -36,7 +36,7 @@ class OfficeTabla(object):
         self.comboBoxBuscarCampo.setCurrentText(comboBoxContent)
         sqlquery = sqlquery[:-1]
         if typeCall == 1 or typeCall == 2:
-            dateDesde = str(cur.execute("SELECT MIN(Fecha_y_Hora) FROM alertassoc").fetchone()[0])
+            dateDesde = str(cur.execute("SELECT MIN(Fecha_Hora) FROM alertasoffice").fetchone()[0])
             print(dateDesde)
             dateDesde = datetime.strptime(dateDesde, '%Y-%m-%d %H:%M:%S')
             self.dateEditDesde.setDate(dateDesde)
@@ -58,7 +58,7 @@ class OfficeTabla(object):
             sqlquery  = "SELECT"+sqlquery+" FROM alertasoffice WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"' and Fecha_Hora > '"+dateDesde+"' AND Fecha_Hora < '"+dateHasta+"';" 
 
         tableRow = 0
-        self.tableWidget.setRowCount(10000)
+        self.tableWidget.setRowCount(100000)
         print(sqlquery)
 
         for row in cur.execute(sqlquery):
@@ -71,6 +71,15 @@ class OfficeTabla(object):
         self.tableWidget.setRowCount(tableRow)
 
         self.centralwidget.update()
+
+    def exportTable(self,directory):
+        columns = range(self.tableWidget.columnCount())
+        header = [self.tableWidget.horizontalHeaderItem(column).text() for column in columns]
+        with open(directory,'w',encoding='UTF8', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(header)
+            for row in range(self.tableWidget.rowCount()):
+                writer.writerow(self.tableWidget.item(row,column).text() for column in columns)
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -89,7 +98,7 @@ class OfficeTabla(object):
         self.pushButtonAtras.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonAtras.setObjectName("pushButtonAtras")
         self.horizontalLayoutWidget_3 = QtWidgets.QWidget(self.widget)
-        self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(40, 90, 801, 71))
+        self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(40, 90, 800, 70))
         self.horizontalLayoutWidget_3.setObjectName("horizontalLayoutWidget_3")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_3)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -121,6 +130,10 @@ class OfficeTabla(object):
         self.pushButtonLimpiar.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonLimpiar.setObjectName("pushButtonLimpiar")
         self.horizontalLayout_3.addWidget(self.pushButtonLimpiar)
+        self.pushButtonExportar = QtWidgets.QPushButton(self.horizontalLayoutWidget_3)
+        self.pushButtonExportar.setStyleSheet("background-color: rgb(255, 135, 135);")
+        self.pushButtonExportar.setObjectName("pushButtonExportar")
+        self.horizontalLayout_3.addWidget(self.pushButtonExportar)
         MainWindow.setCentralWidget(self.centralwidget)
         
 
@@ -134,6 +147,7 @@ class OfficeTabla(object):
         self.pushButton_Fieldselector.setText(_translate("MainWindow", "Seleccionar campos"))
         self.pushButtonAplicar.setText(_translate("MainWindow", "Aplicar"))
         self.pushButtonLimpiar.setText(_translate("MainWindow", "Limpiar"))
+        self.pushButtonExportar.setText(_translate("MainWindow", "Exportar"))
 
 if __name__ == "__main__":
     import sys

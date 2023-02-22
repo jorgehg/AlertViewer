@@ -57,7 +57,7 @@ class TrendmicroTabla(object):
             sqlquery  = "SELECT"+sqlquery+" FROM alertassoc WHERE "+comboBoxContent+"= '"+self.lineEditBuscarCampo.text()+"' and Fecha_y_Hora > '"+dateDesde+"' AND Fecha_y_Hora < '"+dateHasta+"';" 
 
         tableRow = 0
-        self.tableWidget.setRowCount(20000)
+        self.tableWidget.setRowCount(100000)
         print(sqlquery)
         
         for row in cur.execute(sqlquery):
@@ -72,9 +72,10 @@ class TrendmicroTabla(object):
         self.centralwidget.update()
 
     def exportTable(self,directory):
+        print(directory)
         columns = range(self.tableWidget.columnCount())
         header = [self.tableWidget.horizontalHeaderItem(column).text() for column in columns]
-        with open(directory,'w',encoding='UTF8') as file:
+        with open(directory,'w',encoding='UTF8', newline='') as file:
             writer = csv.writer(file)
             writer.writerow(header)
             for row in range(self.tableWidget.rowCount()):
@@ -100,7 +101,7 @@ class TrendmicroTabla(object):
         self.pushButtonAtras.setStyleSheet("background-color: rgb(255, 135, 135);")
         self.pushButtonAtras.setObjectName("pushButtonAtras")
         self.horizontalLayoutWidget_3 = QtWidgets.QWidget(self.widget)
-        self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(40, 90, 800, 71))
+        self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(40, 90, 800, 70))
         self.horizontalLayoutWidget_3.setObjectName("horizontalLayoutWidget_3")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_3)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
