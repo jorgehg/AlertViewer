@@ -73,7 +73,7 @@ class Main(QtWidgets.QMainWindow):
         self.ui_officetabla.pushButton_Fieldselector.clicked.connect(self.open_officefieldselector)
         self.ui_officetabla.pushButtonAplicar.clicked.connect(self.applyChanges_officetabla)
         self.ui_officetabla.pushButtonLimpiar.clicked.connect(lambda: self.ui_officetabla.updateTable(False,2))
-        self.ui_officetabla.pushButtonExportar.clicked.connect(lambda: self.ui_officetabla.exportTable(QtWidgets.QFileDialog.getSaveFileName(self,'Open File')[0]))
+        self.ui_officetabla.pushButtonExportar.clicked.connect(lambda: self.ui_officetabla.exportTable(QtWidgets.QFileDialog.getSaveFileName(self,'Open File','','CSV (*.csv)')[0]))
         self.ui_officetabla.pushButtonAtras.clicked.connect(self.back_officetabla)
 
     def open_trendmicrofieldselector(self):
