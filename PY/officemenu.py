@@ -37,8 +37,8 @@ class OfficeMenu(object):
                             print(e)
 
         
-        for i, _ in enumerate(file_list):
-            with open(os.path.join(folder_path_emails,file_list[i]), encoding="utf8") as file:
+        for files in os.listdir(folder_path_emails):
+            with open(os.path.join(folder_path_emails,files), encoding="utf8") as file:
                 try:
                     reader = list(csv.reader(file))
                     for row in reader[1:]:
@@ -47,6 +47,7 @@ class OfficeMenu(object):
                         #print(row)
                         registerCount+=1
                     fileCount+=1
+                    db.execute("INSERT INTO historial (Fecha_Hora,Nombre,Cantidad_registros,Tipo) VALUES(?,?,?,?)",)
                 except Exception as e: 
                     errorCount+=1
                     resultText = resultText + "\nArchivo: "+file_list[i]+" Error: "+str(e)

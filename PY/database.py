@@ -54,3 +54,14 @@ def createTableOffice():
             "Fuente" TEXT,
             PRIMARY KEY("registro_id" AUTOINCREMENT)
         )""")
+
+def createTableRegistros():
+    db = connect()
+    db.execute("""CREATE TABLE IF NOT EXISTS "historial" (
+            "registro_id"	INTEGER,
+            "Fecha_Hora" TEXT,
+            "Nombre"	TEXT,
+            "Cantidad_registros"
+            "Tipo"      TEXT,
+            PRIMARY KEY("registro_id" AUTOINCREMENT)
+        )""")
