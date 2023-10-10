@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from bifurc import Bifurc
+from bifurc import Bifurc  
 from trendmicromenu import TrendmicroMenu
 from officemenu import OfficeMenu
 from trendmicrotabla import TrendmicroTabla
